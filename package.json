@@ -8,6 +8,7 @@
     "package": "webpack",
     "sass": "npx rebuild node-sass",
     "monaco": "webpack --config webpack.monaco.config.js & webpack --config webpack.monaco-workers.config.js",
+    "prestart": "yarn monaco",
     "start": "webpack-dev-server",
     "audit": "yarn audit",
     "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",

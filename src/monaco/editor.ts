@@ -1,5 +1,6 @@
 import { monaco } from '../../monacobundle/monaco.bundle.js';
 
+// load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
 import editorWorker from '!raw-loader!../../monacobundle/editor.worker.bundle.js';
 import jsonWorker from '!raw-loader!../../monacobundle/json.worker.bundle.js';
 import tsWorker from '!raw-loader!../../monacobundle/ts.worker.bundle.js';
@@ -39,6 +40,8 @@ export function setEnvironment() {
 
 export function createEditor(root: HTMLElement) {
     // extra libraries
+    // add sample d.ts file for intellisense
+    // any *.d.ts file can be loaded as raw data. 
     const libSource = [
         "declare class CustomClass {",
         "    static hello():string",
@@ -48,6 +51,7 @@ export function createEditor(root: HTMLElement) {
     monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri);
     monaco.editor.createModel(libSource, "typescript", monaco.Uri.parse(libUri));
 
+    // creates instance of editor
     const editorInstance = monaco.editor.create(root, <IStandaloneEditorConstructionOptions>{
         value: 'const v = 1;\nCustomClass.hello();',
         language: 'typescript',
