@@ -5,9 +5,9 @@
       "email": "zbritva@gmail.com"
     },
     "visual": {
-      "name": "Monaco editor visual",
-      "displayName": "Monaco editor Visual",
-      "guid": "monacoEditorVisual",
+      "name": "apache-echarts-visual",
+      "displayName": "Apache ECharts Visual",
+      "guid": "apacheEchartsVisual",
       "visualClassName": "Visual",
       "version": "1.0.0.0",
       "description": "Integration of Monaco editor into Power BI Visual",

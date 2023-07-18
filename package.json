@@ -1,5 +1,5 @@
 {
-  "name": "monaco-editor-visual",
+  "name": "echarts-powerbi-editor",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Ilfat Galiev",
@@ -46,7 +46,7 @@
     "node-fetch": "2.6.7",
     "node-sass": "8.0.0",
     "null-loader": "^4.0.1",
-    "powerbi-visuals-api": "4.7.0",
+    "powerbi-visuals-api": "5.4.0",
     "powerbi-visuals-webpack-plugin": "2.3.1",
     "raw-loader": "4.0.2",
     "really-relaxed-json": "^0.3.2",

@@ -45,6 +45,13 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "loadJSONSchema": {
+                    "displayName": "Load schema",
+                    "description": "Load EChart options JSON schema for code completion",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
@@ -159,6 +166,18 @@
         {
             "name": "ExportContent",
             "essential": false
+        },
+        {
+            "name": "WebAccess",
+            "parameters": [
+                "raw.githubusercontent.com"
+            ],
+            "essential": true
+        },
+        {
+            "name": "LocalStorage",
+            "essential": true,
+            "parameters": []
         }
     ]
 }

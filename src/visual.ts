@@ -11,15 +11,16 @@ import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectIns
 import IVisualHost = powerbiVisualsApi.extensibility.visual.IVisualHost
 
 import { VisualSettings } from "./settings";
+import { ResourceLoader } from "./resource";
 
-import { createEditor, setEnvironment } from "./monaco/editor";
-import { editor } from "monaco-editor";
+import { MonacoEditorWrapper } from "./monaco/editor";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
     private settings: VisualSettings;
     private host: IVisualHost;
-    private editor: editor.IStandaloneCodeEditor;
+    private editor: MonacoEditorWrapper;
+    private resources: ResourceLoader;
 
     private appliccationRef: React.RefObject<{
         setOptions: (options: VisualUpdateOptions, settings: VisualSettings) => void;
@@ -28,13 +29,29 @@ export class Visual implements IVisual {
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.host = options.host;
-        setEnvironment();
 
-        this.editor = createEditor(this.target);
+        this.editor = new MonacoEditorWrapper();
+        this.editor.createEditor(this.target);
+        this.editor.setupJson({
+            properties: {
+                p1: {},
+            },
+            additionalProperties: false,
+        })
+
+        this.resources = new ResourceLoader();
     }
 
-    public update(options: VisualUpdateOptions) {
-        //
+    public async update(options: VisualUpdateOptions) {
+        this.settings = Visual.parseSettings(options.dataViews[0]);
+
+        if (this.settings.editor.loadJSONSchema) {
+            await this.resources.load("options.json");
+            const schema = this.resources.get("options.json");
+            if (schema) {
+                this.editor.setupJson(schema);
+            }
+        }
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

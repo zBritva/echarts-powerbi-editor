@@ -4307,10 +4307,10 @@ postcss@^8.2.15:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-powerbi-visuals-api@4.7.0:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/powerbi-visuals-api/-/powerbi-visuals-api-4.7.0.tgz#127adfed98ecadfad7e7c653b11efc8e0a5f6f92"
-  integrity sha512-Gyha3jkwXixUv0PVd+bSbZR/yGx3xL5IzHE9h0F4snVC7DyAWnGRCIejJgTGUfKyqcVQZjpRerBWxbrGB6Edlw==
+powerbi-visuals-api@5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/powerbi-visuals-api/-/powerbi-visuals-api-5.4.0.tgz#07a8723f935c16ffaadd8a415205aba77919b091"
+  integrity sha512-3T7OCBTd6yQtKFt1T+YgQpWGScHByEhOxncWZlNyPVBJBjL+46/CsJL7T6VXOpD0paAYFFS3DWuZOE/q5smPMg==
   dependencies:
     semver "^7.3.5"
 
