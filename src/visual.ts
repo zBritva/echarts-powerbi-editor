@@ -36,10 +36,7 @@ export class Visual implements IVisual {
         this.host = options.host;
 
         this.toolbar = new Toolbar(this.target);
-
         this.editor = new MonacoEditorWrapper(this.target);
-        // this.editor.createEditor(this.target);
-
         this.viewer = new ChartViewer(this.target);
 
         this.editor.onSave((value) => {

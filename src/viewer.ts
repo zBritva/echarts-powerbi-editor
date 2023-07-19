@@ -34,7 +34,7 @@ export class ChartViewer {
         try {
             this.options = JSON.parse(optionConfig);
             if (this.dataset) {
-                this.options.dataset = this.dataset;
+                this.options.dataset = [this.dataset];
             }
             this.chart.setOption(this.options);
         } catch (e) {
