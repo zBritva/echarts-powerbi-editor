@@ -59,6 +59,8 @@ export class Visual implements IVisual {
                 this.editor.show();
             }
             if (state === "Preview") {
+                const chart = this.editor.getValue();
+                this.viewer.setOptions(chart);
                 this.editor.hide();
                 this.viewer.show();
             }
