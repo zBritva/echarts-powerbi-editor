@@ -1,15 +1,13 @@
-// .toolbar {
-//     margin-bottom: 2px;
-//     button {
-//         margin: 2px;
-//     }
-// }
+.toobar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 
-// .message {
-//     font-size: 10px;
-//     margin-top: 5px
-// }
+    .save, .load, .preview {
+        margin: 5px;
+    }
+}
 
-// .docs {
-//     font-size: 12px;
-// }
+.editor, .viewer {
+    height: 100%;
+}

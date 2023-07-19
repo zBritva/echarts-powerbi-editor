@@ -1,5 +1,5 @@
 import { monaco } from "../../monacobundle/monaco.bundle.js";
-import { editor } from "monaco-editor";
+import { editor, KeyCode, KeyMod } from "monaco-editor";
 
 // load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
 import editorWorker from "!raw-loader!../../monacobundle/editor.worker.bundle.js";
@@ -14,88 +14,132 @@ import jsonWorker from "!raw-loader!../../monacobundle/json.worker.bundle.js";
 import IStandaloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
+import { IDataModel } from "./../data";
+
 function createBlobURL(code: string) {
-  const blob = new Blob([code], { type: "application/javascript" });
-  return URL.createObjectURL(blob);
-}
-
-export interface IColumn {
-  displayName: string;
-  type: string;
-}
-
-export interface IDataModel {
-  columns: IColumn;
+    const blob = new Blob([code], { type: "application/javascript" });
+    return URL.createObjectURL(blob);
 }
 
 export class MonacoEditorWrapper {
-  private editorInstance: IStandaloneCodeEditor;
-  private root: HTMLElement;
-  private data: IDataModel;
+    private editorInstance: IStandaloneCodeEditor;
+    private root: HTMLElement;
+    private data: IDataModel;
 
-  private schemas: object[];
+    private schemas: object[];
+    private onSaveCallback: (value: string) => void;
 
-  constructor() {
-    this.schemas = [];
-    window.MonacoEnvironment = {
-      getWorker: function (workerId, label) {
-        let blob;
-        if (label === "json") {
-          blob = createBlobURL(jsonWorker);
+    constructor(target: HTMLElement) {
+        this.schemas = [];
+        window.MonacoEnvironment = {
+            getWorker: function (workerId, label) {
+                let blob;
+                if (label === "json") {
+                    blob = createBlobURL(jsonWorker);
+                }
+                // if (label === 'css' || label === 'scss' || label === 'less') {
+                //     blob = createBlobURL(cssWorker);
+                // } else
+                // if (label === 'html' || label === 'handlebars' || label === 'razor') {
+                //     blob = createBlobURL(htmlWorker);
+                // } else
+                // if (label === "typescript" || label === "javascript") {
+                //   blob = createBlobURL(tsWorker);
+                // } else
+                else {
+                    blob = createBlobURL(editorWorker);
+                }
+                return new Worker(blob, { name: label });
+            },
+            createTrustedTypesPolicy: () => null,
+        };
+
+        this.createEditor(target);
+    }
+
+    private configureKeyCombination() {
+        this.editorInstance.addCommand((KeyMod.CtrlCmd || KeyMod.WinCtrl) | KeyCode.KeyS, () => {
+            const value = this.editorInstance.getValue();
+            this.onSaveCallback(value);
+        });
+    }
+
+    public onSave(callback: (value: string) => void) {
+        this.onSaveCallback = callback;
+    }
+
+    public loadValue(value: string) {
+        const current = this.editorInstance.getValue();
+        if (current === "{\n}\n") {
+            this.editorInstance.setValue(value);
         }
-        // if (label === 'css' || label === 'scss' || label === 'less') {
-        //     blob = createBlobURL(cssWorker);
-        // } else
-        // if (label === 'html' || label === 'handlebars' || label === 'razor') {
-        //     blob = createBlobURL(htmlWorker);
-        // } else
-        // if (label === "typescript" || label === "javascript") {
-        //   blob = createBlobURL(tsWorker);
-        // } else
-        else {
-          blob = createBlobURL(editorWorker);
+    }
+
+    public getValue(): string {
+        return this.editorInstance.getValue();
+    }
+
+    public hide(): void {
+        this.root.style.display = "none";
+    }
+
+    public show(): void {
+        this.root.style.display = "block";
+    }
+
+    public createEditor(target: HTMLElement) {
+        this.root = document.createElement("div");
+        this.root.className = "editor";
+        this.root.style.height = "100%";
+        target.appendChild(this.root);
+        // creates instance of editor
+        this.editorInstance = monaco.editor.create(this.root, {
+            language: "json",
+            quickSuggestions: true,
+            fontSize: 16,
+            automaticLayout: true,
+            wrappingIndent: "indent",
+            model: monaco.editor.createModel("{\n}\n", 'json', "inmemory://inmemory/option.json")
+        } as IStandaloneEditorConstructionOptions);
+
+        this.configureKeyCombination();
+    }
+
+    public addLibrary(content: string, name: string) {
+        const libUri = `ts:filename/${name}`;
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(content, libUri);
+        monaco.editor.createModel(content, "typescript", monaco.Uri.parse(libUri));
+    }
+
+    public setupJson(schema: any) {
+        this.schemas.push({
+            fileMatch: ['option.json'],
+            uri: schema.$schema,
+            schema: schema.option
+        });
+
+        monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            validate: true,
+            schemas: [
+                ...this.schemas
+            ],
+        });
+    }
+
+    public setDataModel(model: IDataModel) {
+        const value = this.editorInstance.getValue();
+        try {
+            const json = JSON.parse(value);
+            json.dataset = {
+                dimensions: [ model.columns.map(col => ({
+                    name: col.displayName,
+                    type: col.type
+                })) ],
+            };
+            const newValue = JSON.stringify(json, null, ' ');
+            this.editorInstance.setValue(newValue);
+        } catch(e) {
+            console.log('Value parse error', e);
         }
-        return new Worker(blob, { name: label });
-      },
-      createTrustedTypesPolicy: () => null,
-    };
-  }
-
-  public createEditor(root: HTMLElement) {
-    this.root = root;
-    // creates instance of editor
-    this.editorInstance = monaco.editor.create(root, {
-        language: "json",
-        quickSuggestions: true,
-        fontSize: 16,
-        automaticLayout: true,
-        wrappingIndent: "indent",
-        model: monaco.editor.createModel("{\n}\n", 'json', "inmemory://inmemory/option.json")
-      } as IStandaloneEditorConstructionOptions);
-  }
-
-  public addLibrary(content: string, name: string) {
-    const libUri = `ts:filename/${name}`;
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(content, libUri);
-    monaco.editor.createModel(content, "typescript", monaco.Uri.parse(libUri));
-  }
-
-  public setupJson(schema: any) {
-    this.schemas.push({
-      fileMatch: [ 'option.json' ],
-      uri: schema.$schema,
-      schema: schema.option
-    });
-
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      validate: true,
-      schemas: [
-        ...this.schemas
-      ],
-    });
-  }
-
-  public setDataModel(model: IDataModel) {
-    this.data = model;
-  }
+    }
 }

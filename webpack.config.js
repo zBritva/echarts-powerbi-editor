@@ -134,7 +134,7 @@ module.exports = {
             },
             {
                 test: /\.(css|scss)?$/,
-                include: MONACO_DIR,
+                include: [MONACO_DIR, path.resolve(__dirname, 'style/')],
                 use: [
                     require.resolve('style-loader'),
                     require.resolve('css-loader'),
