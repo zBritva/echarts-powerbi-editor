@@ -13,7 +13,7 @@ import ValueTypeDescriptor = powerbiVisualsApi.ValueTypeDescriptor;
 import VisualUpdateType = powerbiVisualsApi.VisualUpdateType;
 
 import { VisualSettings } from "./settings";
-import { ResourceLoader } from "./resource";
+import { ResourceLoader, wrapSchema } from "./resource";
 
 import { MonacoEditorWrapper } from "./monaco/editor";
 import { IColumn, createDataset } from "./data";
@@ -68,10 +68,12 @@ export class Visual implements IVisual {
         this.settings = Visual.parseSettings(options.dataViews[0]);
 
         if (this.settings.editor.loadJSONSchema) {
-            await this.resources.load("options.json");
-            const schema = this.resources.get("options.json");
+            const jsonSchema = this.settings.editor.jsonSchema;
+            await this.resources.load(jsonSchema);
+            const schema = this.resources.get(jsonSchema);
             if (schema) {
-                this.editor.setupJson(schema);
+                this.editor.setupJson(wrapSchema(jsonSchema, schema));
+                this.editor.setModel(jsonSchema);
             }
         }
 

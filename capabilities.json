@@ -48,9 +48,33 @@
                 },
                 "loadJSONSchema": {
                     "displayName": "Load schema",
-                    "description": "Load EChart options JSON schema for code completion",
+                    "description": "Load JSON schema for code completion",
                     "type": {
                         "bool": true
+                    }
+                },
+                "jsonSchema": {
+                    "displayName": "json schema",
+                    "description": "Specifies the schema to load for code completion",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "ECharts",
+                                "value": "options.json"
+                            },
+                            {
+                                "displayName": "Plotly.js",
+                                "value": "plotly.js.json"
+                            },
+                            {
+                                "displayName": "Vega v5",
+                                "value": "vega.v5.json"
+                            },
+                            {
+                                "displayName": "Vega-Lite v5",
+                                "value": "vega-lite.v5.json"
+                            }
+                        ]
                     }
                 }
             }

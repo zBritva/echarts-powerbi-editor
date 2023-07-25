@@ -15,4 +15,5 @@ export class Chart {
 
 export class Editor {
     public loadJSONSchema: boolean = false;
+    public jsonSchema: string = "options.json"
 }

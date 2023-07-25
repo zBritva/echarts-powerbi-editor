@@ -1,3 +1,6 @@
 {
-    "options.json": "https://raw.githubusercontent.com/apache/echarts-website/asf-site/en/documents/option.json"
+    "options.json": "https://raw.githubusercontent.com/apache/echarts-website/asf-site/en/documents/option.json",
+    "plotly.js.json": "https://raw.githubusercontent.com/plotly/plotly.js/master/dist/plot-schema.json",
+    "vega.v5.json": "https://raw.githubusercontent.com/vega/schema/299178c0679fc5e7aa439b76cdd6d867c68989ea/vega/v5.25.0.json",
+    "vega-lite.v5.json": "https://raw.githubusercontent.com/vega/schema/51c769bb1e0d0a56cf4e039097a2c2187ebd10f4/vega-lite/v5.7.1.json"
 }

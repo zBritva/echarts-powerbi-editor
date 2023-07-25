@@ -25,6 +25,7 @@ export class MonacoEditorWrapper {
     private editorInstance: IStandaloneCodeEditor;
     private root: HTMLElement;
     private data: IDataModel;
+    private currentModel: string;
 
     private schemas: object[];
     private onSaveCallback: (value: string) => void;
@@ -111,9 +112,24 @@ export class MonacoEditorWrapper {
         monaco.editor.createModel(content, "typescript", monaco.Uri.parse(libUri));
     }
 
-    public setupJson(schema: any) {
+    public setModel(model: string) {
+        const value = this.editorInstance.getValue();
+        const oldModel = this.editorInstance.getModel();
+        if (oldModel) {
+            oldModel.dispose();
+        }
+        const newModel = monaco.editor.createModel(value, 'json', `inmemory://inmemory/${model}`)
+        this.editorInstance.setModel(newModel);
+        this.currentModel = model;
+    }
+
+    public setupJson(schema: {
+        fileMatch: [string];
+        $schema: string;
+        option: Record<string, unknown>;
+    }) {
         this.schemas.push({
-            fileMatch: ['option.json'],
+            fileMatch: schema.fileMatch,
             uri: schema.$schema,
             schema: schema.option
         });
@@ -128,18 +144,28 @@ export class MonacoEditorWrapper {
 
     public setDataModel(model: IDataModel) {
         const value = this.editorInstance.getValue();
-        try {
-            const json = JSON.parse(value);
-            json.dataset = {
-                dimensions: [ model.columns.map(col => ({
-                    name: col.displayName,
-                    type: col.type
-                })) ],
-            };
-            const newValue = JSON.stringify(json, null, ' ');
-            this.editorInstance.setValue(newValue);
-        } catch(e) {
-            console.log('Value parse error', e);
+        switch(this.currentModel) {
+            case "options.json": {
+                    try {
+                        const json = JSON.parse(value);
+                        json.dataset = {
+                            dimensions: [ model.columns.map(col => ({
+                                name: col.displayName,
+                                type: col.type
+                            })) ],
+                        };
+                        const newValue = JSON.stringify(json, null, ' ');
+                        this.editorInstance.setValue(newValue);
+                    } catch(e) {
+                        console.log('Value parse error', e);
+                    }
+                }
+                break;
+            case "plotly.js.json":
+            case "vega.v5.json":
+            case "vega-lite.v5.json":
+                break;
         }
+        
     }
 }
