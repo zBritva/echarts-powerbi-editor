@@ -1,10 +1,11 @@
+/* eslint-disable powerbi-visuals/no-http-string */
 
 // https://raw.githubusercontent.com/apache/echarts-website/asf-site/en/documents/option.json
 
 
 const resourcesList: Record<string, string> = require("json-loader!../../assets/resources.json");
 
-console.log('resourcesList', resourcesList);
+import PlotlyJSONSchemaConverter from "./plotly-schema-converter";
 
 export class ResourceLoader {
 
@@ -59,20 +60,21 @@ export function wrapSchema(name: string, json: Record<string, unknown>): {
     $schema: string;
     option: Record<string, unknown>;
 } {
-    debugger;
     switch (name) {
-        case "plotly.js.json":
+        case "plotly.js.json": {
+            const plotlySchema = PlotlyJSONSchemaConverter.convert(json as Record<string, unknown>);
             return {
                 fileMatch: [name],
-                $schema: "https://raw.githubusercontent.com/plotly/plotly.js/master/dist/plot-schema.json",
-                option: json as Record<string, unknown>
+                $schema:plotlySchema.$schema,
+                option: plotlySchema
             };
+        }
         case "vega.v5.json":
         case "vega-lite.v5.json":
             return {
                 fileMatch: [name],
-                $schema: json.$schema as string,
-                option: json.definitions as Record<string, unknown>
+                $schema: "http://json-schema.org/draft-07/schema#",
+                option: json as Record<string, unknown>
             };
         default:
             return {
