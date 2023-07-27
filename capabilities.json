@@ -21,6 +21,32 @@
                     "type": {
                         "text": true
                     }
+                },
+                "template": {
+                    "description": "Charticulator template",
+                    "descriptionKey": "Visual_CharticulatorTemplate",
+                    "displayName": "Charticulator template",
+                    "displayNameKey": "Visual_CharticulatorTemplate",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
+        "vega": {
+            "description": "Vega chart specification",
+            "descriptionKey": "Visual_VegaChart",
+            "displayName": "Vega chart",
+            "displayNameKey": "Visual_VegaChart",
+            "properties": {
+                "jsonSpec": {
+                    "description": "Chart schema",
+                    "descriptionKey": "Visual_ChartSchema",
+                    "displayName": "Chart schema",
+                    "displayNameKey": "Visual_ChartSchema",
+                    "type": {
+                        "text": true
+                    }
                 }
             }
         },
@@ -51,6 +77,30 @@
                     "description": "Load JSON schema for code completion",
                     "type": {
                         "bool": true
+                    }
+                },
+                "targetVisual": {
+                    "displayName": "Target visual for editing",
+                    "description": "Specifies the visual to edit",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "PlotlyJS Visual",
+                                "value": "plotlyjs"
+                            },
+                            {
+                                "displayName": "Deneb",
+                                "value": "deneb"
+                            },
+                            {
+                                "displayName": "ECharts",
+                                "value": "echart"
+                            },
+                            {
+                                "displayName": "Charticulator",
+                                "value": "charticulator"
+                            }
+                        ]
                     }
                 },
                 "jsonSchema": {

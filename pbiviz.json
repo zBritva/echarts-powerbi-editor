@@ -5,12 +5,12 @@
       "email": "zbritva@gmail.com"
     },
     "visual": {
-      "name": "apache-echarts-visual",
-      "displayName": "Apache ECharts Visual",
-      "guid": "apacheEchartsVisual",
+      "name": "visual-powerbi-editor",
+      "displayName": "Power BI Visual Editor",
+      "guid": "powerBIEditorVisual",
       "visualClassName": "Visual",
       "version": "1.0.0.0",
-      "description": "Integration of Monaco editor into Power BI Visual",
+      "description": "Integration of Monaco editor into Power BI Visual for editin JSON files of PlotlyJS, Deneb, Charticulator visuals templates ",
       "supportUrl": "https://zbritva.click/",
       "gitHubUrl": "https://github.com/zbritva"
     },

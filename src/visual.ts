@@ -30,6 +30,10 @@ export class Visual implements IVisual {
     private viewer: ChartViewer;
     private toolbar: Toolbar;
     private resources: ResourceLoader;
+    private propertyForPersist: {
+        object: string;
+        propperty: string;
+    };
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -40,14 +44,14 @@ export class Visual implements IVisual {
         this.viewer = new ChartViewer(this.target);
 
         this.editor.onSave((value) => {
-            this.persistProperty("chart", "schema", value);
+            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
         })
 
         this.resources = new ResourceLoader();
 
         this.toolbar.onSave.subscribe(() => {
             const value = this.editor.getValue();
-            this.persistProperty("chart", "schema", value);
+            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
         });
 
         this.toolbar.onPreviewSwitch.subscribe((state) => {
@@ -77,14 +81,51 @@ export class Visual implements IVisual {
             }
         }
 
-        const schema = this.settings.chart.schema;
-        if (schema !== "{\n}\n") {
+        const targetVisual = this.settings.editor.targetVisual;
+
+        let schema: string = "{}";
+
+        switch (targetVisual) {
+            case "plotlyjs":
+                this.propertyForPersist = {
+                    object: "chart",
+                    propperty: "schema"
+                };
+                schema = this.settings.chart.schema;
+                break;
+            case "deneb":
+                this.propertyForPersist = {
+                    object: "vega",
+                    propperty: "jsonSpec"
+                };
+                schema = this.settings.vega.jsonSpec;
+                break;
+            case "charticulator":
+                this.propertyForPersist = {
+                    object: "chart",
+                    propperty: "template"
+                };
+                schema = this.settings.chart.template;
+                break;
+            
+            case "echart":
+            default:
+                this.propertyForPersist = {
+                    object: "chart",
+                    propperty: "echart"
+                };
+                schema = this.settings.chart.echart;
+                break;
+        }
+
+        if (schema) {
             this.editor.loadValue(schema);
         }
 
         if (
-            (options.type & VisualUpdateType.All) === VisualUpdateType.All ||
-            (options.type & VisualUpdateType.Data) === VisualUpdateType.Data
+            ((options.type & VisualUpdateType.All) === VisualUpdateType.All ||
+            (options.type & VisualUpdateType.Data) === VisualUpdateType.Data) &&
+            targetVisual === "echart"
         ) {
             const dataset = createDataset(options.dataViews[0]);
 
@@ -145,6 +186,14 @@ export class Visual implements IVisual {
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
         if (options.objectName === 'chart') {
+            return <VisualObjectInstance[]>[
+                {
+                    objectName: options.objectName,
+                    properties: {}
+                }
+            ];
+        }
+        if (options.objectName === 'vega') {
             return <VisualObjectInstance[]>[
                 {
                     objectName: options.objectName,
