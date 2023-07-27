@@ -1,4 +1,4 @@
-import { Observable, fromEvent, map } from 'rxjs';
+import { Observable, fromEvent, map, switchMap  } from 'rxjs';
 
 export type ViewState = "Editor" | "Preview";
 
@@ -9,9 +9,11 @@ export class Toolbar {
     private saveButton: HTMLButtonElement;
     private loadButton: HTMLButtonElement;
     private preview: HTMLButtonElement;
+    
+    private input: HTMLInputElement;
 
     public onSave: Observable<Event>;
-    public onLoad: Observable<Event>;
+    public onLoad: Observable<string>;
     public onPreviewSwitch: Observable<ViewState>;
 
     constructor(target: HTMLElement) {
@@ -29,7 +31,10 @@ export class Toolbar {
         this.loadButton.textContent = "Load";
         this.loadButton.className = "load";
         this.root.appendChild(this.loadButton);
-        this.onLoad = fromEvent(this.loadButton, 'click');
+        fromEvent(this.loadButton, "click")
+            .subscribe(() => {
+                this.input.click();
+            });
         
         this.preview = document.createElement("button");
         this.preview.textContent = "Preview";
@@ -42,6 +47,20 @@ export class Toolbar {
         this.onPreviewSwitch.subscribe(() => {
             this.preview.textContent = this.preview.textContent === "Preview" ? "Editor" : "Preview";
         });
+
+        this.input = document.createElement("input");
+        this.input.type = "file";
+        this.input.className = "input";
+        this.root.appendChild(this.input);
+        this.onLoad = fromEvent(this.input, "change")
+        .pipe(switchMap (async (event: Event) => {
+            const fileList = (event.target as HTMLInputElement).files;
+            if (fileList.length) {
+                const content = await fileList[0].text();
+                return content;
+            }
+            return null;
+        }));
     }
 
     public switchPreviewSupport(enable: boolean) {

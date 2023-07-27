@@ -52,6 +52,13 @@ export class Visual implements IVisual {
         this.toolbar.onSave.subscribe(() => {
             const value = this.editor.getValue();
             this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
+        }); 
+
+        this.toolbar.onLoad.subscribe((content: string) => {
+            if (!content) {
+                return;
+            }
+            this.editor.loadValue(content, true);
         });
 
         this.toolbar.onPreviewSwitch.subscribe((state) => {
@@ -109,7 +116,6 @@ export class Visual implements IVisual {
                 };
                 schema = this.settings.chart.template;
                 break;
-            
             case "echart":
             default:
                 this.propertyForPersist = {

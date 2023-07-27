@@ -69,9 +69,9 @@ export class MonacoEditorWrapper {
         this.onSaveCallback = callback;
     }
 
-    public loadValue(value: string) {
+    public loadValue(value: string, force: boolean = false) {
         const current = this.editorInstance.getValue();
-        if (current === "{\n}\n") {
+        if (current === "{\n}\n" || force) {
             this.editorInstance.setValue(value);
         }
     }
