@@ -11,6 +11,7 @@ import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectIns
 import IVisualHost = powerbiVisualsApi.extensibility.visual.IVisualHost
 import ValueTypeDescriptor = powerbiVisualsApi.ValueTypeDescriptor;
 import VisualUpdateType = powerbiVisualsApi.VisualUpdateType;
+import ISelectionManager = powerbiVisualsApi.extensibility.ISelectionManager;
 
 import { VisualSettings } from "./settings";
 import { ResourceLoader, wrapSchema } from "./resource";
@@ -30,6 +31,7 @@ export class Visual implements IVisual {
     private viewer: ChartViewer;
     private toolbar: Toolbar;
     private resources: ResourceLoader;
+    private selectionManager: ISelectionManager;
     private propertyForPersist: {
         object: string;
         propperty: string;
@@ -38,6 +40,8 @@ export class Visual implements IVisual {
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.host = options.host;
+
+        this.selectionManager = this.host.createSelectionManager();
 
         this.toolbar = new Toolbar(this.target);
         this.editor = new MonacoEditorWrapper(this.target);
@@ -72,6 +76,15 @@ export class Visual implements IVisual {
                 this.editor.hide();
                 this.viewer.show();
             }
+        });
+
+        this.toolbar.onContextMenu.subscribe((event: MouseEvent) => {
+            this.selectionManager.showContextMenu(null, {
+                x: event.clientX,
+                y: event.clientY
+            });
+            event.preventDefault();
+            event.stopPropagation();
         });
     }
 
@@ -194,20 +207,22 @@ export class Visual implements IVisual {
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
         if (options.objectName === 'chart') {
-            return <VisualObjectInstance[]>[
-                {
-                    objectName: options.objectName,
-                    properties: {}
-                }
-            ];
+            // return <VisualObjectInstance[]>[
+            //     {
+            //         objectName: options.objectName,
+            //         properties: {}
+            //     }
+            // ];
+            return [];
         }
         if (options.objectName === 'vega') {
-            return <VisualObjectInstance[]>[
-                {
-                    objectName: options.objectName,
-                    properties: {}
-                }
-            ];
+            // return <VisualObjectInstance[]>[
+            //     {
+            //         objectName: options.objectName,
+            //         properties: {}
+            //     }
+            // ];
+            return [];
         }
         return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
     }

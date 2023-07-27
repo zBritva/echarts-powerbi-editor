@@ -16,10 +16,14 @@ export class Toolbar {
     public onLoad: Observable<string>;
     public onPreviewSwitch: Observable<ViewState>;
 
+    public onContextMenu: Observable<Event>;
+
     constructor(target: HTMLElement) {
         this.root = document.createElement("div");
         this.root.className = "toobar";
         target.appendChild(this.root);
+
+        this.onContextMenu = fromEvent(this.root, 'contextmenu');
 
         this.saveButton = document.createElement("button");
         this.saveButton.textContent = "Save";
