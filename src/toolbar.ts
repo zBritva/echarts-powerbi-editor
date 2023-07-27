@@ -43,4 +43,12 @@ export class Toolbar {
             this.preview.textContent = this.preview.textContent === "Preview" ? "Editor" : "Preview";
         });
     }
+
+    public switchPreviewSupport(enable: boolean) {
+        if (enable) {
+            this.preview.style.display = "block";
+        } else {
+            this.preview.style.display = "none";
+        }
+    }
 }

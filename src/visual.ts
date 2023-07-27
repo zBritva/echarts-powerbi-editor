@@ -83,6 +83,8 @@ export class Visual implements IVisual {
 
         const targetVisual = this.settings.editor.targetVisual;
 
+        this.toolbar.switchPreviewSupport(targetVisual === "echart");
+
         let schema: string = "{}";
 
         switch (targetVisual) {
