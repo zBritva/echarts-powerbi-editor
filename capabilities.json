@@ -13,6 +13,15 @@
             "displayName": "Chart",
             "displayNameKey": "Visual_Chart",
             "properties": {
+                "echart": {
+                    "description": "EChart schema",
+                    "descriptionKey": "Visual_EChartSchema",
+                    "displayName": "EChart schema",
+                    "displayNameKey": "Visual_EChartSchema",
+                    "type": {
+                        "text": true
+                    }
+                },
                 "schema": {
                     "description": "Chart schema",
                     "descriptionKey": "Visual_ChartSchema",
@@ -128,67 +137,6 @@
                     }
                 }
             }
-        },
-        "backgroundFetchData": {
-            "description": "Fetch more data in background",
-            "descriptionKey": "Visual_FetchDataDescription",
-            "displayName": "Fetch more data (Preview)",
-            "displayNameKey": "Visual_FetchData",
-            "properties": {
-                "show": {
-                    "description": "Fetch more data in background",
-                    "descriptionKey": "Visual_FetchDataDescription",
-                    "displayName": "Fetch more data",
-                    "displayNameKey": "Visual_FetchData",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "aggregateSegments": {
-                    "description": "Segments aggregation mode",
-                    "descriptionKey": "Visual_AggregateSegmentsDescription",
-                    "displayName": "Aggregate segments ",
-                    "displayNameKey": "Visual_AggregateSegments",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "limit": {
-                    "description": "Rows count limit for fetching. The visual stops fetching data after reaching limits",
-                    "descriptionKey": "Visual_FetchDataLimitDescription",
-                    "displayName": "Data limit",
-                    "displayNameKey": "Visual_FetchDataLimit",
-                    "type": {
-                        "numeric": true
-                    }
-                },
-                "delayRender": {
-                    "description": "Hold rendeing chart while visual loadin data",
-                    "descriptionKey": "Visual_DelayRenderDescription",
-                    "displayName": "Hold rendeing charts ",
-                    "displayNameKey": "Visual_DelayRender",
-                    "type": {
-                        "bool": true
-                    }
-                }
-            }
-        },
-        "highlights": {
-            "description": "Add columns with highlight values for all measures",
-            "descriptionKey": "Visual_Highlight_Columns_Description",
-            "displayName": "Highlight columns",
-            "displayNameKey": "Visual_Highlight_Columns",
-            "properties": {
-                "show": {
-                    "description": "Add columns with highlight values for all measures",
-                    "descriptionKey": "Visual_Highlight_Columns_Description",
-                    "displayName": "Highlight columns",
-                    "displayNameKey": "Visual_Highlight_Columns",
-                    "type": {
-                        "bool": true
-                    }
-                }
-            }
         }
     },
     "dataViewMappings": [
@@ -221,20 +169,10 @@
         }
     ],
     "advancedEditModeSupport": 2,
-    "supportsHighlight": true,
+    "supportsHighlight": false,
     "supportsLandingPage": true,
     "sorting": {
         "default": {}
-    },
-    "tooltips": {
-        "supportedTypes": {
-            "canvas": true,
-            "default": true
-        },
-        "roles": [
-            "data"
-        ],
-        "supportEnhancedTooltips": true
     },
     "privileges": [
         {

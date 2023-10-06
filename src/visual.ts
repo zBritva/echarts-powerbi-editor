@@ -17,18 +17,17 @@ import { VisualSettings } from "./settings";
 import { ResourceLoader, wrapSchema } from "./resource";
 
 import { MonacoEditorWrapper } from "./monaco/editor";
-import { IColumn, createDataset } from "./data";
-import { ChartViewer } from "./viewer";
+import { IColumn } from "./data";
 import { Toolbar } from "./toolbar";
 
 import "../style/visual.scss";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
+    private options: VisualConstructorOptions;
     private settings: VisualSettings;
     private host: IVisualHost;
     private editor: MonacoEditorWrapper;
-    private viewer: ChartViewer;
     private toolbar: Toolbar;
     private resources: ResourceLoader;
     private selectionManager: ISelectionManager;
@@ -37,7 +36,10 @@ export class Visual implements IVisual {
         propperty: string;
     };
 
+    private previousTargetVisual: string;
+
     constructor(options: VisualConstructorOptions) {
+        this.options = options;
         this.target = options.element;
         this.host = options.host;
 
@@ -45,7 +47,8 @@ export class Visual implements IVisual {
 
         this.toolbar = new Toolbar(this.target);
         this.editor = new MonacoEditorWrapper(this.target);
-        this.viewer = new ChartViewer(this.target);
+        this.editor.hide();
+        // this.viewer = new ChartViewer(this.target);
 
         this.editor.onSave((value) => {
             this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
@@ -65,19 +68,6 @@ export class Visual implements IVisual {
             this.editor.loadValue(content, true);
         });
 
-        this.toolbar.onPreviewSwitch.subscribe((state) => {
-            if (state === "Editor") {
-                this.viewer.hide();
-                this.editor.show();
-            }
-            if (state === "Preview") {
-                const chart = this.editor.getValue();
-                this.viewer.setOptions(chart);
-                this.editor.hide();
-                this.viewer.show();
-            }
-        });
-
         this.toolbar.onContextMenu.subscribe((event: MouseEvent) => {
             this.selectionManager.showContextMenu(null, {
                 x: event.clientX,
@@ -86,10 +76,21 @@ export class Visual implements IVisual {
             event.preventDefault();
             event.stopPropagation();
         });
+        
+        this.toolbar.onExport.subscribe(() => {
+            this.host.downloadService.exportVisualsContent(this.editor.getValue(), 'chart.json', '.json', 'JSON File');
+        });
+
+        this.host.downloadService.exportStatus().then((status) => {
+            this.toolbar.allowExport(status === powerbiVisualsApi.PrivilegeStatus.Allowed);
+        });
     }
 
     public async update(options: VisualUpdateOptions) {
+        console.log('update');
         this.settings = Visual.parseSettings(options.dataViews[0]);
+
+        this.toolbar.allowLoadSave(options.viewMode !== powerbiVisualsApi.ViewMode.View)
 
         if (this.settings.editor.loadJSONSchema) {
             const jsonSchema = this.settings.editor.jsonSchema;
@@ -102,8 +103,6 @@ export class Visual implements IVisual {
         }
 
         const targetVisual = this.settings.editor.targetVisual;
-
-        this.toolbar.switchPreviewSupport(targetVisual === "echart");
 
         let schema: string = "{}";
 
@@ -139,25 +138,24 @@ export class Visual implements IVisual {
                 break;
         }
 
-        if (schema) {
-            this.editor.loadValue(schema);
-        }
-
+        // add options for data model
         if (
             ((options.type & VisualUpdateType.All) === VisualUpdateType.All ||
             (options.type & VisualUpdateType.Data) === VisualUpdateType.Data) &&
             targetVisual === "echart"
         ) {
-            const dataset = createDataset(options.dataViews[0]);
-
             const columns = this.getColumns(options.dataViews[0]);
             this.editor.setDataModel({
                 columns
             });
-
-            this.viewer.addDataset(dataset);
-            this.viewer.setOptions(schema);
         }
+
+        if (schema) {
+            this.editor.loadValue(schema, targetVisual !== this.previousTargetVisual);
+        }
+
+        this.editor.show();
+        this.previousTargetVisual = targetVisual;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

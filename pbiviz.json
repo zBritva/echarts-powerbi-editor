@@ -2,7 +2,7 @@
 {
     "author": {
       "name": "Ilfat Galiev",
-      "email": "zbritva@gmail.com"
+      "email": "ilfat.galiev@zbritva.com"
     },
     "visual": {
       "name": "visual-powerbi-editor",
@@ -10,9 +10,9 @@
       "guid": "powerBIEditorVisual",
       "visualClassName": "Visual",
       "version": "1.0.0.0",
-      "description": "Integration of Monaco editor into Power BI Visual for editin JSON files of PlotlyJS, Deneb, Charticulator visuals templates ",
-      "supportUrl": "https://zbritva.click/",
-      "gitHubUrl": "https://github.com/zbritva"
+      "description": "Integration of Monaco editor into Power BI Visual for editin JSON files of Apache ECharts, PlotlyJS, Deneb, Charticulator visuals templates ",
+      "supportUrl": "https://github.com/zBritva/echarts-powerbi-editor/issues",
+      "gitHubUrl": "https://github.com/zBritva/echarts-powerbi-editor"
     },
     "apiVersion": "5.4.0",
     "assets": {

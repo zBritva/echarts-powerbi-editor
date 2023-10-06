@@ -128,6 +128,7 @@ export class MonacoEditorWrapper {
         $schema: string;
         option: Record<string, unknown>;
     }) {
+        this.schemas = [];
         this.schemas.push({
             fileMatch: schema.fileMatch,
             uri: schema.$schema,

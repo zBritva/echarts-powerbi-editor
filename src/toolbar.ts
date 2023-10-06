@@ -1,20 +1,18 @@
 import { Observable, fromEvent, map, switchMap  } from 'rxjs';
 
-export type ViewState = "Editor" | "Preview";
-
 export class Toolbar {
 
     private root: HTMLDivElement;
 
     private saveButton: HTMLButtonElement;
     private loadButton: HTMLButtonElement;
-    private preview: HTMLButtonElement;
+    private exportButton: HTMLButtonElement;
     
     private input: HTMLInputElement;
 
     public onSave: Observable<Event>;
     public onLoad: Observable<string>;
-    public onPreviewSwitch: Observable<ViewState>;
+    public onExport: Observable<void>;
 
     public onContextMenu: Observable<Event>;
 
@@ -35,22 +33,24 @@ export class Toolbar {
         this.loadButton.textContent = "Load";
         this.loadButton.className = "load";
         this.root.appendChild(this.loadButton);
+
         fromEvent(this.loadButton, "click")
             .subscribe(() => {
                 this.input.click();
             });
-        
-        this.preview = document.createElement("button");
-        this.preview.textContent = "Preview";
-        this.preview.className = "preview";
-        this.root.appendChild(this.preview);
-        this.onPreviewSwitch = fromEvent(this.preview, 'click').pipe(map(() => {
-            return this.preview.textContent === "Preview" ? "Editor" : "Preview";
-        }));
 
-        this.onPreviewSwitch.subscribe(() => {
-            this.preview.textContent = this.preview.textContent === "Preview" ? "Editor" : "Preview";
-        });
+        this.exportButton = document.createElement("button");
+        this.exportButton.textContent = "Export";
+        this.exportButton.className = "export";
+        this.exportButton.setAttribute('disabled', 'true');
+        this.root.appendChild(this.exportButton);
+
+        this.onExport = fromEvent<void>(this.exportButton, 'click');
+        
+        fromEvent(this.exportButton, "click")
+            .subscribe(() => {
+                console.log('TODO: export functionaluty');
+            });
 
         this.input = document.createElement("input");
         this.input.type = "file";
@@ -67,11 +67,27 @@ export class Toolbar {
         }));
     }
 
-    public switchPreviewSupport(enable: boolean) {
-        if (enable) {
-            this.preview.style.display = "block";
+    public allowExport(allow: boolean) {
+        if (allow) {
+            this.exportButton.removeAttribute('disabled');
+            this.exportButton.setAttribute('title', 'Export to file');
         } else {
-            this.preview.style.display = "none";
+            this.exportButton.setAttribute('disabled','true');
+            this.exportButton.setAttribute('title', 'Export is not allowed. Contact with tenant administrator.');
+        }
+    }
+
+    public allowLoadSave(allow: boolean) {
+        if (allow) {
+            this.loadButton.removeAttribute('disabled');
+            this.saveButton.removeAttribute('disabled');
+            this.loadButton.removeAttribute('title');
+            this.saveButton.removeAttribute('title');
+        } else {
+            this.loadButton.setAttribute('disabled', 'true');
+            this.saveButton.setAttribute('disabled', 'true');
+            this.loadButton.setAttribute('title', 'Report in view mode. Loading enabled in edit mode only');
+            this.saveButton.setAttribute('title', 'Report in view mode. Saving enabled in edit mode only');
         }
     }
 }

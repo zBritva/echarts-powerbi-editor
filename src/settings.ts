@@ -23,7 +23,7 @@ export class Vega {
 }
 
 export class Editor {
-    public loadJSONSchema: boolean = false;
+    public loadJSONSchema: boolean = true;
     public jsonSchema: string = "options.json";
     public targetVisual: TargetVisual = "echart"
 }
