@@ -9,9 +9,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Checkout submodules
-        run: git submodule update --init --recursive
       
       - name: Install node
         uses: actions/setup-node@v3
@@ -21,6 +18,12 @@ jobs:
       - name: Install packages
         working-directory: ./
         run: npm install
+
+      - name: Build Monaco
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        working-directory: ./
+        run: npm run monaco
       
       - name: Build visual
         env:
