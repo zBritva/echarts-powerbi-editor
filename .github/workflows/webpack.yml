@@ -1,0 +1,35 @@
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+
+      - name: Install packages
+        working-directory: ./
+        run: npm install
+      
+      - name: Build visual
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        working-directory: ./
+        run: npm run package
+
+      - name: Publish *.pbiviz
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual
+          path: dist/*.pbiviz
