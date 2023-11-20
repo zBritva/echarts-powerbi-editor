@@ -164,9 +164,15 @@ module.exports = {
         },
     },
     devServer: {
-        static: false,
-        compress: true,
         port: 8080, // dev server port
+        compress: true,
+        static: {
+            directory: path.join(__dirname, '.tmp', 'drop'),
+            publicPath: '/assets'
+        },
+        devMiddleware: {
+            writeToDisk: true
+        },
         hot: false,
         liveReload: false,
         https: {
@@ -214,7 +220,7 @@ module.exports = {
             dependenciesSchema: powerbiApi.schemas.dependencies,
             devMode: false,
             generatePbiviz: true,
-            generateResources: true,
+            generateResources: false,
             modules: true,
             visualSourceLocation: "../../src/visual",
             pluginLocation: pluginLocation,
