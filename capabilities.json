@@ -108,6 +108,10 @@
                             {
                                 "displayName": "Charticulator",
                                 "value": "charticulator"
+                            },
+                            {
+                                "displayName": "HTML/SVG/Handlebars",
+                                "value": "handlebars"
                             }
                         ]
                     }
@@ -132,8 +136,47 @@
                             {
                                 "displayName": "Vega-Lite v5",
                                 "value": "vega-lite.v5.json"
+                            },
+                            {
+                                "displayName": "Handlebars",
+                                "value": "handlebars"
                             }
                         ]
+                    }
+                }
+            }
+        },
+        "template": {
+            "description": "Template for HTML/SVG/Handlebars template",
+            "descriptionKey": "Visual_HandlebarsDescription",
+            "displayName": "Handlebars",
+            "displayNameKey": "Visual_Handlebars",
+            "properties": {
+                "chunk0": {
+                    "description": "Template storage",
+                    "descriptionKey": "Visual_TemplateStorage",
+                    "displayName": "Template chunk 1",
+                    "displayNameKey": "Visual_TemplateChunk1",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chunk1": {
+                    "description": "Template storage",
+                    "descriptionKey": "Visual_TemplateStorage",
+                    "displayName": "Template chunk 2",
+                    "displayNameKey": "Visual_TemplateChunk2",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chunk2": {
+                    "description": "Template storage",
+                    "descriptionKey": "Visual_TemplateStorage",
+                    "displayName": "Template chunk 2",
+                    "displayNameKey": "Visual_TemplateChunk2",
+                    "type": {
+                        "text": true
                     }
                 }
             }

@@ -19,6 +19,7 @@ import { ResourceLoader, wrapSchema } from "./resource";
 import { MonacoEditorWrapper } from "./monaco/editor";
 import { IColumn } from "./data";
 import { Toolbar } from "./toolbar";
+import { concatChunks, splitToChunks } from "./utils"
 
 import "../style/visual.scss";
 
@@ -48,17 +49,16 @@ export class Visual implements IVisual {
         this.toolbar = new Toolbar(this.target);
         this.editor = new MonacoEditorWrapper(this.target);
         this.editor.hide();
-        // this.viewer = new ChartViewer(this.target);
 
         this.editor.onSave((value) => {
-            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
+            this.persistValue(value);
         })
 
         this.resources = new ResourceLoader();
 
         this.toolbar.onSave.subscribe(() => {
             const value = this.editor.getValue();
-            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
+            this.persistValue(value);
         }); 
 
         this.toolbar.onLoad.subscribe((content: string) => {
@@ -86,23 +86,36 @@ export class Visual implements IVisual {
         });
     }
 
+    private persistValue(value: string) {
+        if (this.settings.editor.targetVisual === 'handlebars') {
+            const chunks = splitToChunks(value);
+            for (const chunk in chunks) {
+                this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty.replace('${index}', chunk), chunks[chunk]);
+            }
+        } else {
+            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
+        }
+    }
+
     public async update(options: VisualUpdateOptions) {
         console.log('update');
         this.settings = Visual.parseSettings(options.dataViews[0]);
 
         this.toolbar.allowLoadSave(options.viewMode !== powerbiVisualsApi.ViewMode.View)
+        const targetVisual = this.settings.editor.targetVisual;
 
         if (this.settings.editor.loadJSONSchema) {
+            debugger;
             const jsonSchema = this.settings.editor.jsonSchema;
             await this.resources.load(jsonSchema);
             const schema = this.resources.get(jsonSchema);
-            if (schema) {
+            if (schema !== null) {
+                debugger;
                 this.editor.setupJson(wrapSchema(jsonSchema, schema));
-                this.editor.setModel(jsonSchema);
+                this.editor.setModel(jsonSchema, targetVisual === "handlebars" ? 'html' : 'json');
             }
         }
 
-        const targetVisual = this.settings.editor.targetVisual;
 
         let schema: string = "{}";
 
@@ -128,7 +141,13 @@ export class Visual implements IVisual {
                 };
                 schema = this.settings.chart.template;
                 break;
-            case "echart":
+            case "handlebars":
+                    this.propertyForPersist = {
+                        object: "template",
+                        propperty: "chunk${index}"
+                    };
+                    schema = concatChunks(this.settings.template);
+                    break;
             default:
                 this.propertyForPersist = {
                     object: "chart",

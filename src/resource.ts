@@ -38,6 +38,10 @@ export class ResourceLoader {
     public async load(name: string): Promise<boolean> {
         const resource = this.resourceKeys.find(r => r === name);
 
+        if (name === 'handlebars') {
+            this.loadedResources.set(name, '');
+        }
+
         if (resource && !this.loadedResources.has(name)) {
             const response = await fetch(resourcesList[resource]);
             if (response.status !== 200) {

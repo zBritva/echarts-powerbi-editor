@@ -5,7 +5,7 @@ import { editor, KeyCode, KeyMod } from "monaco-editor";
 import editorWorker from "!raw-loader!../../monacobundle/editor.worker.bundle.js";
 import jsonWorker from "!raw-loader!../../monacobundle/json.worker.bundle.js";
 // import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
-// import htmlWorker from '!raw-loader!../../monacobundle/html.worker.bundle.js';
+import htmlWorker from '!raw-loader!../../monacobundle/html.worker.bundle.js';
 // import cssWorker from '!raw-loader!../../monacobundle/css.worker.bundle.js';
 
 // const optionsSchema = require("json-loader!../../assets/option.json");
@@ -37,13 +37,13 @@ export class MonacoEditorWrapper {
                 let blob;
                 if (label === "json") {
                     blob = createBlobURL(jsonWorker);
-                }
+                } else
                 // if (label === 'css' || label === 'scss' || label === 'less') {
                 //     blob = createBlobURL(cssWorker);
                 // } else
-                // if (label === 'html' || label === 'handlebars' || label === 'razor') {
-                //     blob = createBlobURL(htmlWorker);
-                // } else
+                if (label === 'html' || label === 'handlebars' || label === 'razor') {
+                    blob = createBlobURL(htmlWorker);
+                }
                 // if (label === "typescript" || label === "javascript") {
                 //   blob = createBlobURL(tsWorker);
                 // } else
@@ -112,13 +112,13 @@ export class MonacoEditorWrapper {
         monaco.editor.createModel(content, "typescript", monaco.Uri.parse(libUri));
     }
 
-    public setModel(model: string) {
+    public setModel(model: string, type: string = 'json') {
         const value = this.editorInstance.getValue();
         const oldModel = this.editorInstance.getModel();
         if (oldModel) {
             oldModel.dispose();
         }
-        const newModel = monaco.editor.createModel(value, 'json', `inmemory://inmemory/${model}`)
+        const newModel = monaco.editor.createModel(value, type, `inmemory://inmemory/${model}`)
         this.editorInstance.setModel(newModel);
         this.currentModel = model;
     }
