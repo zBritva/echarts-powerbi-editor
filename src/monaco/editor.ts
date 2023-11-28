@@ -6,7 +6,7 @@ import editorWorker from "!raw-loader!../../monacobundle/editor.worker.bundle.js
 import jsonWorker from "!raw-loader!../../monacobundle/json.worker.bundle.js";
 // import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
 import htmlWorker from '!raw-loader!../../monacobundle/html.worker.bundle.js';
-// import cssWorker from '!raw-loader!../../monacobundle/css.worker.bundle.js';
+import cssWorker from '!raw-loader!../../monacobundle/css.worker.bundle.js';
 
 // const optionsSchema = require("json-loader!../../assets/option.json");
 // https://raw.githubusercontent.com/apache/echarts-website/asf-site/en/documents/option.json
@@ -38,9 +38,9 @@ export class MonacoEditorWrapper {
                 if (label === "json") {
                     blob = createBlobURL(jsonWorker);
                 } else
-                // if (label === 'css' || label === 'scss' || label === 'less') {
-                //     blob = createBlobURL(cssWorker);
-                // } else
+                if (label === 'css' || label === 'scss' || label === 'less') {
+                    blob = createBlobURL(cssWorker);
+                } else
                 if (label === 'html' || label === 'handlebars' || label === 'razor') {
                     blob = createBlobURL(htmlWorker);
                 }
