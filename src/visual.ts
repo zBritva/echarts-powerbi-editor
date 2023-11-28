@@ -116,7 +116,6 @@ export class Visual implements IVisual {
             }
         }
 
-
         let schema: string = "{}";
 
         switch (targetVisual) {
@@ -233,6 +232,15 @@ export class Visual implements IVisual {
             return [];
         }
         if (options.objectName === 'vega') {
+            // return <VisualObjectInstance[]>[
+            //     {
+            //         objectName: options.objectName,
+            //         properties: {}
+            //     }
+            // ];
+            return [];
+        }
+        if (options.objectName === 'template') {
             // return <VisualObjectInstance[]>[
             //     {
             //         objectName: options.objectName,
