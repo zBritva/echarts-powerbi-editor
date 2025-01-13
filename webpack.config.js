@@ -68,7 +68,7 @@ module.exports = {
     },
     optimization: {
         concatenateModules: true,
-        minimize: true // enable minimization for create *.pbiviz file less than 2 Mb, can be disabled for dev mode
+        minimize: false // enable minimization for create *.pbiviz file less than 2 Mb, can be disabled for dev mode
     },
     devtool: 'source-map',
     mode: "development",
@@ -156,12 +156,10 @@ module.exports = {
         alias: {
             'blob-url-loader': path.join(__dirname, './loaders/blobUrl.js'),
             'compile-url-loader': path.join(__dirname, './loaders/compile.js')
-          },
+        },
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.css'],
-        alias: {
-        },
     },
     devServer: {
         port: 8080, // dev server port

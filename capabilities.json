@@ -22,6 +22,15 @@
                         "text": true
                     }
                 },
+                "apexchart": {
+                    "description": "ApexCharts schema",
+                    "descriptionKey": "Visual_ApexChartsSchema",
+                    "displayName": "ApexCharts schema",
+                    "displayNameKey": "Visual_ApexChartsSchema",
+                    "type": {
+                        "text": true
+                    }
+                },
                 "schema": {
                     "description": "Chart schema",
                     "descriptionKey": "Visual_ChartSchema",
@@ -112,6 +121,14 @@
                             {
                                 "displayName": "HTML/SVG/Handlebars",
                                 "value": "handlebars"
+                            },
+                            {
+                                "displayName": "ApexCharts",
+                                "value": "apexcharts"
+                            },
+                            {
+                                "displayName": "Mermaid.js/Markdown",
+                                "value": "mermaidmarkdown"
                             }
                         ]
                     }
@@ -139,7 +156,15 @@
                             },
                             {
                                 "displayName": "Handlebars",
-                                "value": "handlebars"
+                                "value": "handlebars.hbs"
+                            },
+                            {
+                                "displayName": "Mermaid.js",
+                                "value": "mermaid"
+                            },
+                            {
+                                "displayName": "Markdown",
+                                "value": "markdown"
                             }
                         ]
                     }

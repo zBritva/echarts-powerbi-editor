@@ -38,7 +38,7 @@ export class ResourceLoader {
     public async load(name: string): Promise<boolean> {
         const resource = this.resourceKeys.find(r => r === name);
 
-        if (name === 'handlebars') {
+        if (name === 'handlebars.hbs') {
             this.loadedResources.set(name, '');
         }
 
