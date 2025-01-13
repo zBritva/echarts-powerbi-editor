@@ -1,4 +1,4 @@
-import { monaco } from "../../monacobundle/monaco.bundle.js";
+import monaco from "monaco-editor"
 import { editor, KeyCode, KeyMod } from "monaco-editor";
 
 // load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
@@ -15,6 +15,9 @@ import IStandaloneEditorConstructionOptions = editor.IStandaloneEditorConstructi
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 import { IDataModel } from "./../data";
+import { loadHighlight } from "./highlight";
+
+import { setupMermaid } from "./mermaid"
 
 function createBlobURL(code: string) {
     const blob = new Blob([code], { type: "application/javascript" });
@@ -55,6 +58,8 @@ export class MonacoEditorWrapper {
             createTrustedTypesPolicy: () => null,
         };
 
+        loadHighlight(monaco);
+
         this.createEditor(target);
     }
 
@@ -93,14 +98,19 @@ export class MonacoEditorWrapper {
         this.root.className = "editor";
         this.root.style.height = "100%";
         target.appendChild(this.root);
+
+        setupMermaid(monaco);
+
         // creates instance of editor
         this.editorInstance = monaco.editor.create(this.root, {
-            language: "json",
+            language: "svg",
             quickSuggestions: true,
             fontSize: 16,
             automaticLayout: true,
             wrappingIndent: "indent",
-            model: monaco.editor.createModel("{\n}\n", 'json', "inmemory://inmemory/option.json")
+            codeLens: true,
+            snippetSuggestions: "inline",
+            model: monaco.editor.createModel("{\n}\n", 'json', monaco.Uri.parse("inmemory://inmemory/handlebars.hbs"))
         } as IStandaloneEditorConstructionOptions);
 
         this.configureKeyCombination();
@@ -114,11 +124,11 @@ export class MonacoEditorWrapper {
 
     public setModel(model: string, type: string = 'json') {
         const value = this.editorInstance.getValue();
-        const oldModel = this.editorInstance.getModel();
-        if (oldModel) {
-            oldModel.dispose();
-        }
-        const newModel = monaco.editor.createModel(value, type, `inmemory://inmemory/${model}`)
+        // const oldModel = this.editorInstance.getModel();
+        // if (oldModel) {
+        //     oldModel.dispose();
+        // }
+        const newModel = monaco.editor.createModel(value, type, monaco.Uri.parse(`inmemory://${model}`))
         this.editorInstance.setModel(newModel);
         this.currentModel = model;
     }
@@ -139,11 +149,11 @@ export class MonacoEditorWrapper {
             validate: true,
             schemas: [
                 ...this.schemas
-            ],
+            ] as any,
         });
     }
 
-    public setDataModel(model: IDataModel) {
+    public configureModel(model: IDataModel) {
         const value = this.editorInstance.getValue();
         switch(this.currentModel) {
             case "options.json": {
@@ -162,6 +172,28 @@ export class MonacoEditorWrapper {
                     }
                 }
                 break;
+            case "handlebars.hbs": {
+                console.log('handlebars.hbs');
+// declare var AMD: any;
+// declare var require: any;
+
+// registerLanguage({
+// 	id: 'handlebars',
+// 	extensions: ['.handlebars', '.hbs'],
+// 	aliases: ['Handlebars', 'handlebars', 'hbs'],
+// 	mimetypes: ['text/x-handlebars-template'],
+// 	loader: () => {
+// 		if (AMD) {
+// 			return new Promise((resolve, reject) => {
+// 				require(['vs/basic-languages/handlebars/handlebars'], resolve, reject);
+// 			});
+// 		} else {
+// 			return import('./handlebars');
+// 		}
+// 	}
+// });
+                break;
+            }
             case "plotly.js.json":
             case "vega.v5.json":
             case "vega-lite.v5.json":

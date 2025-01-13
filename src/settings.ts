@@ -4,9 +4,18 @@
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-export type TargetVisual = "echart" | "plotlyjs" | "deneb" | "charticulator" | "handlebars";
+export type TargetVisual = "echart" | "plotlyjs" | "deneb" | "charticulator" | "handlebars" | "apexcharts" | "mermaidmarkdown";
 
-export class VisualSettings extends DataViewObjectsParser  {
+export type TargetSchema = "handlebars.hbs" | "mermaid" | "markdown" | "vega-lite.v5.json" | "vega.v5.json" | "plotly.js.json" | "options.json";
+
+export interface IVisualSettings {
+    chart: Chart
+    vega: Vega
+    editor: Editor
+    template: Template
+}
+
+export class VisualSettings extends DataViewObjectsParser implements IVisualSettings {
     public chart: Chart = new Chart();
     public vega: Vega = new Vega();
     public editor: Editor = new Editor();
@@ -15,6 +24,7 @@ export class VisualSettings extends DataViewObjectsParser  {
 
 export class Chart {
     public echart: string = "{}";
+    public apexcharts: string = "{}";
     public schema: string = "{}";
     public template: string = "{}";
 }
@@ -34,10 +44,11 @@ export class Template {
     public chunk7: string = "";
     public chunk8: string = "";
     public chunk9: string = "";
+    public chunk10: string = "";
 }
 
 export class Editor {
     public loadJSONSchema: boolean = true;
-    public jsonSchema: string = "options.json";
-    public targetVisual: TargetVisual = "echart"
+    public jsonSchema: TargetSchema = "handlebars.hbs";
+    public targetVisual: TargetVisual = "handlebars"
 }

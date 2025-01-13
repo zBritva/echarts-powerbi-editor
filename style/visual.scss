@@ -1,34 +1,42 @@
-.toobar {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+// <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+// <!-- blueprint-icons.css file must be included alongside blueprint.css for icon font support -->
+// <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
+// <!-- add other blueprint-*.css files here -->
 
-    button {
-        margin: 5px;
-    }
+@import '../node_modules/@blueprintjs/core/lib/css/blueprint.css';
+@import '../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css';
 
-    .input {
-        display: none;
-    }
-}
+// .toobar {
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: flex-start;
+
+//     button {
+//         margin: 5px;
+//     }
+
+//     .input {
+//         display: none;
+//     }
+// }
 
 .editor, .viewer {
     height: 100%;
 }
 
-button {
-    background-color: #167abe;
-    border: none;
-    color: white;
-    padding: 5px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
+// button {
+//     background-color: #167abe;
+//     border: none;
+//     color: white;
+//     padding: 5px 16px;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 12px;
+//     margin: 4px 2px;
+//     cursor: pointer;
+// }
 
-button:disabled {
-    background-color: #808080;
-}
+// button:disabled {
+//     background-color: #808080;
+// }
