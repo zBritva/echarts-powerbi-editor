@@ -1,0 +1,1704 @@
+{
+    "type": "object",
+    "required": [],
+    "properties": {
+        "specification": {
+            "type": "object",
+            "required": [],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "classID": {
+                    "type": "string"
+                },
+                "properties": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "backgroundColor": {
+                            "type": "string"
+                        },
+                        "backgroundOpacity": {
+                            "type": "number"
+                        },
+                        "enableContextMenu": {
+                            "type": "boolean"
+                        },
+                        "exposed": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "mappings": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "marginTop": {
+                            "type": "object",
+                            "required": [],
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "width": {
+                            "type": "object",
+                            "required": [],
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "height": {
+                            "type": "object",
+                            "required": [],
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "marginRight": {
+                            "type": "object",
+                            "required": [],
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "glyphs": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "classID": {
+                                "type": "string"
+                            },
+                            "properties": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "table": {
+                                "type": "string"
+                            },
+                            "marks": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": [],
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "classID": {
+                                            "type": "string"
+                                        },
+                                        "properties": {
+                                            "type": "object",
+                                            "required": [],
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mappings": {
+                                            "type": "object",
+                                            "required": [],
+                                            "properties": {
+                                                "x": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "parentAttribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "y": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "parentAttribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "mappings": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {}
+                            },
+                            "constraints": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "elements": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "classID": {
+                                "type": "string"
+                            },
+                            "mappings": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "color": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "opacity": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    "fill": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "fillStart": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "fillStop": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "strokeWidth": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "properties": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "linkMarkType": {
+                                        "type": "string"
+                                    },
+                                    "visible": {
+                                        "type": "boolean"
+                                    },
+                                    "linkType": {
+                                        "type": "string"
+                                    },
+                                    "interpolationType": {
+                                        "type": "string"
+                                    },
+                                    "anchor1": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [],
+                                            "properties": {
+                                                "x": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "element": {
+                                                            "type": "string"
+                                                        },
+                                                        "attribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "y": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "element": {
+                                                            "type": "string"
+                                                        },
+                                                        "attribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "direction": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "x": {
+                                                            "type": "string"
+                                                        },
+                                                        "y": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "anchor2": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": [],
+                                            "properties": {
+                                                "x": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "element": {
+                                                            "type": "string"
+                                                        },
+                                                        "attribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "y": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "element": {
+                                                            "type": "string"
+                                                        },
+                                                        "attribute": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "direction": {
+                                                    "type": "object",
+                                                    "required": [],
+                                                    "properties": {
+                                                        "x": {
+                                                            "type": "string"
+                                                        },
+                                                        "y": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "linkBetween": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "plotSegments": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "curveness": {
+                                        "type": "number"
+                                    },
+                                    "closeLink": {
+                                        "type": "string"
+                                    },
+                                    "beginArrowType": {
+                                        "type": "string"
+                                    },
+                                    "endArrowType": {
+                                        "type": "string"
+                                    },
+                                    "exposed": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "scales": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "classID": {
+                                "type": "string"
+                            },
+                            "properties": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "enableTooltips": {
+                                        "type": "boolean"
+                                    },
+                                    "enableContextMenu": {
+                                        "type": "boolean"
+                                    },
+                                    "enableSelection": {
+                                        "type": "boolean"
+                                    },
+                                    "exposed": {
+                                        "type": "boolean"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "autoDomainMin": {
+                                        "type": "boolean"
+                                    },
+                                    "autoDomainMax": {
+                                        "type": "boolean"
+                                    },
+                                    "mapping": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "Jan": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Feb": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Mar": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Apr": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "May": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Jun": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Jul": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Aug": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "Sep": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Oct": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Nov": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "Dec": {
+                                                "type": "object",
+                                                "required": [],
+                                                "properties": {
+                                                    "r": {
+                                                        "type": "number"
+                                                    },
+                                                    "g": {
+                                                        "type": "number"
+                                                    },
+                                                    "b": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "mappings": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {}
+                            },
+                            "inputType": {
+                                "type": "string"
+                            },
+                            "outputType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "scaleMappings": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "table": {
+                                "type": "string"
+                            },
+                            "expression": {
+                                "type": "string"
+                            },
+                            "valueType": {
+                                "type": "string"
+                            },
+                            "scale": {
+                                "type": "string"
+                            },
+                            "attribute": {
+                                "type": "string"
+                            },
+                            "valueIndex": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "constraints": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "attributes": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "element": {
+                                        "type": "string"
+                                    },
+                                    "attribute": {
+                                        "type": "string"
+                                    },
+                                    "targetElement": {
+                                        "type": "string"
+                                    },
+                                    "targetAttribute": {
+                                        "type": "string"
+                                    },
+                                    "gap": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "defaultAttributes": {
+            "type": "object",
+            "required": [],
+            "properties": {
+                "4l2evsr8qx9": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "fontSize": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "2vrtlsu1b9s": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "vua6wlw1al": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "kcfutabauip": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        },
+                        "fontSize": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "5qbjts0tb08": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "4wvy9r404qb": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "string"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "number"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "zmsbdga6nl": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "qg7iubwf9lo": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "ijj8exlyxbs": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "dx": {
+                            "type": "number"
+                        },
+                        "dy": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "8yu989hdl9": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "r0of1u6c6ke": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "m561gjkk7ib": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "ucc8mdfy2a": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "sqyemnszwx": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "4ysgn86es7": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        },
+                        "fontSize": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "v40hwo7hl3": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "anchorXundefined": {
+                            "type": "string"
+                        },
+                        "anchorYundefined": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "4m0w24kyuob": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "string"
+                        },
+                        "y": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "pgdxyye34ye": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "string"
+                        },
+                        "x2": {
+                            "type": "string"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "x3": {
+                            "type": "number"
+                        },
+                        "y3": {
+                            "type": "number"
+                        },
+                        "x4": {
+                            "type": "number"
+                        },
+                        "y4": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "qvyhvnwys": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "string"
+                        },
+                        "cy": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "h1l02ril32e": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "number"
+                        },
+                        "cy": {
+                            "type": "number"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "gradientRotation": {
+                            "type": "string"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "0ijl0yedv5x": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "t3eicqvzv1h": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "number"
+                        },
+                        "cy": {
+                            "type": "number"
+                        },
+                        "dx": {
+                            "type": "number"
+                        },
+                        "dy": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "raktyzl4g9": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "number"
+                        },
+                        "cy": {
+                            "type": "number"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        },
+                        "fontSize": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "wtc9w19hkv": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "size": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "8mhzypjvvdx": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        },
+                        "cx": {
+                            "type": "number"
+                        },
+                        "cy": {
+                            "type": "number"
+                        },
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        },
+                        "strokeWidth": {
+                            "type": "number"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "4mylwdxfhsr": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "x1": {
+                            "type": "number"
+                        },
+                        "y1": {
+                            "type": "number"
+                        },
+                        "x2": {
+                            "type": "number"
+                        },
+                        "y2": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        "tables": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "displayName": "Month",
+                            "name": "Month",
+                            "type": "string",
+                            "metadata": {
+                                "kind": "categorical",
+                                "order": [
+                                    "Jan",
+                                    "Feb",
+                                    "Mar",
+                                    "Apr",
+                                    "May",
+                                    "Jun",
+                                    "Jul",
+                                    "Aug",
+                                    "Sep",
+                                    "Oct",
+                                    "Nov",
+                                    "Dec"
+                                ],
+                                "examples": "Jan, Feb, Mar"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "inference": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "objectID": {
+                        "type": "string"
+                    },
+                    "dataSource": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "table": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "axis": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "expression": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "style": {
+                                "type": "object",
+                                "required": [],
+                                "properties": {
+                                    "tickColor": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "r": {
+                                                "type": "string"
+                                            },
+                                            "g": {
+                                                "type": "string"
+                                            },
+                                            "b": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "tickTextBackgroudColor": {
+                                        "type": "string"
+                                    },
+                                    "tickTextBackgroudColorId": {
+                                        "type": "string"
+                                    },
+                                    "showTicks": {
+                                        "type": "boolean"
+                                    },
+                                    "showBaseline": {
+                                        "type": "boolean"
+                                    },
+                                    "lineColor": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "r": {
+                                                "type": "string"
+                                            },
+                                            "g": {
+                                                "type": "string"
+                                            },
+                                            "b": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "fontFamily": {
+                                        "type": "string"
+                                    },
+                                    "fontSize": {
+                                        "type": "number"
+                                    },
+                                    "tickSize": {
+                                        "type": "number"
+                                    },
+                                    "wordWrap": {
+                                        "type": "string"
+                                    },
+                                    "verticalText": {
+                                        "type": "string"
+                                    },
+                                    "gridlineStyle": {
+                                        "type": "string"
+                                    },
+                                    "gridlineColor": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                            "r": {
+                                                "type": "number"
+                                            },
+                                            "g": {
+                                                "type": "number"
+                                            },
+                                            "b": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    "gridlineWidth": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "order": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "orderMode": {
+                                "type": "string"
+                            },
+                            "rawExpression": {
+                                "type": "string"
+                            },
+                            "property": {
+                                "type": "string"
+                            },
+                            "defineCategories": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "autoDomainMin": {
+                        "type": "boolean"
+                    },
+                    "autoDomainMax": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "properties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "objectID": {
+                        "type": "string"
+                    },
+                    "target": {
+                        "type": "object",
+                        "required": [],
+                        "properties": {
+                            "attribute": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "default": {
+                        "type": "string"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "version": {
+            "type": "string"
+        },
+        "default": {
+            "type": "string"
+        },
+        "author": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        }
+    }
+}
