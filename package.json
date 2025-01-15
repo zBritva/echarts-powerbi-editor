@@ -11,6 +11,7 @@
     "prestart": "yarn monaco",
     "start": "webpack-dev-server",
     "audit": "yarn audit",
+    "plotly-schema": "node json-converter.js",
     "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "lintfix": "npx eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
