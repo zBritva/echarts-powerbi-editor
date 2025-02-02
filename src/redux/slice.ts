@@ -126,7 +126,7 @@ export const slice = createSlice({
             const values = {}
             if (state.settings.chart.echart.trim()) {
                 const value = state.settings.chart.echart;
-                const model = 'echart.json'
+                const model = 'echarts.json'
                 values[model] = value;
             }
             if (state.settings.chart.apexcharts.trim()) {

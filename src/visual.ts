@@ -32,6 +32,42 @@ import { Provider, useDispatch } from "react-redux";
 import { store } from "./redux/store";
 import { setDataView, setHost, setJsonSchema, setMode, setSettings, setViewport } from './redux/slice';
 
+// load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
+const editorWorker = require("!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js");
+const jsonWorker = require("!raw-loader!./../monaco-bundle/dist/json.worker.bundle.js");
+// import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
+const htmlWorker = require('!raw-loader!./../monaco-bundle/dist/html.worker.bundle.js');
+const cssWorker = require('!raw-loader!./../monaco-bundle/dist/css.worker.bundle.js');
+
+function createBlobURL(code: string) {
+    const blob = new Blob([code], { type: "application/javascript" });
+    return URL.createObjectURL(blob);
+}
+
+window.MonacoEnvironment = {
+    getWorker: function (workerId, label) {
+        debugger;
+        let blob;
+        if (label === "json") {
+            blob = createBlobURL(jsonWorker);
+        } else
+        if (label === 'css' || label === 'scss' || label === 'less') {
+            blob = createBlobURL(cssWorker);
+        } else
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+            blob = createBlobURL(htmlWorker);
+        }
+        // if (label === "typescript" || label === "javascript") {
+        //   blob = createBlobURL(tsWorker);
+        // } else
+        else {
+            blob = createBlobURL(editorWorker);
+        }
+        return new Worker(blob, { name: label });
+    },
+    createTrustedTypesPolicy: () => null,
+};
+
 export class Visual implements IVisual {
     private target: HTMLElement;
     private options: VisualConstructorOptions;
@@ -46,21 +82,21 @@ export class Visual implements IVisual {
         property: string;
     };
 
-    private previousTargetVisual: string;
-
     constructor(options: VisualConstructorOptions | undefined) {
         this.options = options;
         this.target = options.element;
         this.host = options.host;
 
         this.selectionManager = this.host.createSelectionManager();
+        this.resources = new ResourceLoader();
 
         if (document) {
             const reactApplication = React.createElement<IApplication>(Application, {
                 key: "root",
                 persistValue: (object: string, property: string, value: string) => {
                     this.persistValue(object, property, value);
-                }
+                },
+                resources: this.resources
             });
 
             const storeProvider = React.createElement(Provider, {
@@ -94,7 +130,6 @@ export class Visual implements IVisual {
         //     this.persistValue(value);
         // })
 
-        // this.resources = new ResourceLoader();
 
         // this.toolbar.onSave.subscribe(() => {
         //     const value = this.editor.getValue();
@@ -146,15 +181,20 @@ export class Visual implements IVisual {
 
         // const jsonSchema = this.settings.editor.jsonSchema;
 
-        // if (this.settings.editor.loadJSONSchema) {
-        //     await this.resources.load(jsonSchema);
-        //     const schema = this.resources.get(jsonSchema);
-        //     if (schema !== null) {
-        //         store.dispatch(setJsonSchema(wrapSchema(jsonSchema, schema)))
-                // this.editor.setupJson();
-                // this.editor.setModel(jsonSchema, targetVisual === "handlebars" ? 'svg' : 'json');
+        if (this.settings.editor.loadJSONSchema) {
+            await this.resources.load("echarts.json");
+            await this.resources.load("plotly.json");
+            await this.resources.load("vega.json");
+            await this.resources.load("vega-lite.json");
+            await this.resources.load("charticulator.json");
+
+            // const schema = this.resources.get(jsonSchema);
+            // if (schema !== null) {
+            //     store.dispatch(setJsonSchema(wrapSchema(jsonSchema, schema)))
+            //     this.editor.setupJson();
+            //     this.editor.setModel(jsonSchema, targetVisual === "handlebars" ? 'svg' : 'json');
             // }
-        // }
+        }
         // if (targetVisual === "handlebars") {
         //     this.editor.setModel('svg', 'svg');
         // }

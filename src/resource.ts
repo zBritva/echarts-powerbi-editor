@@ -43,7 +43,9 @@ export class ResourceLoader {
         }
 
         if (resource && !this.loadedResources.has(name)) {
-            const response = await fetch(resourcesList[resource]);
+            const response = await fetch(resourcesList[resource], {
+                mode: 'cors'
+            });
             if (response.status !== 200) {
                 return false;
             }
@@ -65,14 +67,8 @@ export function wrapSchema(name: string, json: Record<string, unknown>): {
     option: Record<string, unknown>;
 } {
     switch (name) {
-        case "plotly.js.json": {
-            const plotlySchema = PlotlyJSONSchemaConverter.convert(json as Record<string, unknown>);
-            return {
-                fileMatch: [name],
-                $schema:plotlySchema.$schema,
-                option: plotlySchema
-            };
-        }
+        case "charticulator.json":
+        case "plotly.js.json":
         case "vega.v5.json":
         case "vega-lite.v5.json":
             return {

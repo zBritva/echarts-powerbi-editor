@@ -7,51 +7,18 @@ import {
 import * as monaco_bundle from "monaco-bundle";
 
 console.log('monaco', monaco_bundle.monaco);
-import { KeyCode, KeyMod, Uri } from "monaco-editor";
+import { KeyCode, KeyMod, languages, Uri } from "monaco-editor";
 
 import { setupMermaid } from "./monaco/mermaid"
-
-// load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
-const editorWorker = require("!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js");
-const jsonWorker = require("!raw-loader!./../monaco-bundle/dist/json.worker.bundle.js");
-// import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
-const htmlWorker = require('!raw-loader!./../monaco-bundle/dist/html.worker.bundle.js');
-const cssWorker = require('!raw-loader!./../monaco-bundle/dist/css.worker.bundle.js');
 
 import IStandaloneEditorConstructionOptions = monaco_bundle.editor.IStandaloneEditorConstructionOptions;
 import IStandaloneCodeEditor = monaco_bundle.editor.IStandaloneCodeEditor;
 import { useAppSelector } from "./redux/hooks";
 // import { setValue } from "./redux/slice";
 import { Toolbar } from "./toolbar";
+import { ResourceLoader } from "./resource";
 
-function createBlobURL(code: string) {
-    const blob = new Blob([code], { type: "application/javascript" });
-    return URL.createObjectURL(blob);
-}
 
-window.MonacoEnvironment = {
-    getWorker: function (workerId, label) {
-        debugger;
-        let blob;
-        if (label === "json") {
-            blob = createBlobURL(jsonWorker);
-        } else
-        if (label === 'css' || label === 'scss' || label === 'less') {
-            blob = createBlobURL(cssWorker);
-        } else
-        if (label === 'html' || label === 'handlebars' || label === 'razor') {
-            blob = createBlobURL(htmlWorker);
-        }
-        // if (label === "typescript" || label === "javascript") {
-        //   blob = createBlobURL(tsWorker);
-        // } else
-        else {
-            blob = createBlobURL(editorWorker);
-        }
-        return new Worker(blob, { name: label });
-    },
-    createTrustedTypesPolicy: () => null,
-};
 
 export interface IMonaco {
     onSave: (model: {
@@ -59,10 +26,12 @@ export interface IMonaco {
         property: string,
         value: string
     }[]) => void;
+    resources: ResourceLoader;
 }
 
 export const Monaco: React.FC<IMonaco> = ({
-    onSave
+    onSave,
+    resources
 }) => {
 
     const root = React.useRef<HTMLDivElement>();
@@ -80,91 +49,114 @@ export const Monaco: React.FC<IMonaco> = ({
     }, []); 
 
     React.useEffect(() => {
-        // window.MonacoEnvironment = {
-        //     getWorker: function (workerId, label) {
-        //         let blob;
-        //         if (label === "json") {
-        //             blob = createBlobURL(jsonWorker);
-        //         } else
-        //         if (label === 'css' || label === 'scss' || label === 'less') {
-        //             blob = createBlobURL(cssWorker);
-        //         } else
-        //         if (label === 'html' || label === 'handlebars' || label === 'razor') {
-        //             blob = createBlobURL(htmlWorker);
-        //         }
-        //         // if (label === "typescript" || label === "javascript") {
-        //         //   blob = createBlobURL(tsWorker);
-        //         // } else
-        //         else {
-        //             blob = createBlobURL(editorWorker);
-        //         }
-        //         return new Worker(blob, { name: label });
-        //     },
-        //     createTrustedTypesPolicy: () => null,
-        // };
+        (async () => {
+            await resources.load("echarts.json");
+            await resources.load("plotly.json");
+            await resources.load("vega.json");
+            await resources.load("vega-lite.json");
+            await resources.load("charticulator.json");
 
-        const models = {};
+            const models = {};
 
-        if (settings.chart.echart.trim()) {
-            const value = settings.chart.echart;
-            const model = 'echart.json'
-            const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
-            models[model] = value;
-        }
-        if (settings.chart.apexcharts.trim()) {
-            const value = settings.chart.apexcharts;
-            const model = 'apexcharts.json'
-            const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
-            models[model] = value;
-        }
-        if (settings.chart.template.trim()) {
-            const value = settings.chart.template;
-            const model = 'charticulator.json'
-            const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
-            models[model] = value;
-        }
-        if (settings.vega.jsonSpec.trim()) {
-            const value = settings.vega.jsonSpec;
-            const model = 'deneb.json'
-            const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
-            models[model] = value;
-        }
-        if (settings.template.chunk0.trim()) {
-            const value = settings.template.chunk0
-                .concat(settings.template.chunk1)
-                .concat(settings.template.chunk2)
-                .concat(settings.template.chunk3)
-                .concat(settings.template.chunk4)
-                .concat(settings.template.chunk5)
-                .concat(settings.template.chunk6)
-                .concat(settings.template.chunk7)
-                .concat(settings.template.chunk8)
-                .concat(settings.template.chunk9)
-                .concat(settings.template.chunk10)
+            const schemas = [];
 
-            const model = 'mermaid.md'
-            const newModel = monaco_bundle.monaco.editor.createModel(value, "mermaid", Uri.parse(`inmemory://${model}`))
-            models[model] = value;
-        }
+            if (settings.chart.echart.trim()) {
+                const value = settings.chart.echart;
+                const model = 'echarts.json'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
 
-        setupMermaid(monaco_bundle.monaco);
+                const schema = resources.get(model);
+                if (schema) {
+                    schemas.push({
+                        fileMatch: model,
+                        uri: schema.$schema,
+                        schema: schema.option
+                    })
+                }
+            }
+            if (settings.chart.apexcharts.trim()) {
+                const value = settings.chart.apexcharts;
+                const model = 'apexcharts.json'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
+            }
+            if (settings.chart.template.trim()) {
+                const value = settings.chart.template;
+                const model = 'charticulator.json'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
 
-        debugger;
-        // creates instance of editor
-        editorInstance.current = monaco_bundle.monaco.editor.create(root.current, {
-            quickSuggestions: true,
-            fontSize: 16,
-            automaticLayout: true,
-            wrappingIndent: "indent",
-            codeLens: true,
-            snippetSuggestions: "inline",
-            model: null
-        } as IStandaloneEditorConstructionOptions);
-        
-        configureKeyCombination();
-        const names = Object.keys(models);
-        setModelNames(names)
-        setCurrentModel(names[0]);
+                const schema = resources.get(model);
+                if (schema) {
+                    schemas.push({
+                        fileMatch: model,
+                        uri: schema.$schema,
+                        schema: schema.option
+                    })
+                }
+            }
+            if (settings.vega.jsonSpec.trim()) {
+                const value = settings.vega.jsonSpec;
+                const model = 'deneb.json'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
+
+                const schemaName = "vega-lite.json";
+                const schema = resources.get(schemaName);
+                if (schema) {
+                    schemas.push({
+                        fileMatch: model,
+                        uri: schema.$schema,
+                        schema: schema.option
+                    })
+                }
+            }
+            if (settings.template.chunk0.trim()) {
+                const value = settings.template.chunk0
+                    .concat(settings.template.chunk1)
+                    .concat(settings.template.chunk2)
+                    .concat(settings.template.chunk3)
+                    .concat(settings.template.chunk4)
+                    .concat(settings.template.chunk5)
+                    .concat(settings.template.chunk6)
+                    .concat(settings.template.chunk7)
+                    .concat(settings.template.chunk8)
+                    .concat(settings.template.chunk9)
+                    .concat(settings.template.chunk10)
+
+                const model = 'mermaid.md'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "mermaid", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
+            }
+
+            setupMermaid(monaco_bundle.monaco);
+
+            debugger;
+            if (monaco_bundle.monaco.languages.json) {
+                monaco_bundle.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+                    validate: true,
+                    schemas: schemas,
+                });
+            }
+
+            // creates instance of editor
+            editorInstance.current = monaco_bundle.monaco.editor.create(root.current, {
+                language: 'json',
+                quickSuggestions: true,
+                fontSize: 16,
+                automaticLayout: true,
+                wrappingIndent: "indent",
+                codeLens: true,
+                snippetSuggestions: "inline",
+                model: null
+            } as IStandaloneEditorConstructionOptions);
+            
+            configureKeyCombination();
+            const names = Object.keys(models);
+            setModelNames(names)
+            setCurrentModel(names[0]);
+        })();
     }, []);
 
     const configureKeyCombination = React.useCallback(() => {
@@ -192,7 +184,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     
                     let object = null;
                     switch (mn) {
-                        case "echart.json":
+                        case "echarts.json":
                         case "charticulator.json":
                         case "apexcharts.json":
                             object = "chart";
@@ -206,7 +198,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     }
                     let property = null;
                     switch (mn) {
-                        case "echart.json":
+                        case "echarts.json":
                             property = "chart";
                             break;
                         case "charticulator.json":
@@ -236,14 +228,17 @@ export const Monaco: React.FC<IMonaco> = ({
         <Tabs id="TabsExample" selectedTabId={currentModel} onChange={(newModel, oldModel, event) => {
             setCurrentModel(newModel as string);
             const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${newModel}`))
+            if (!model) {
+                return;
+            }
             const value = model.getValue();
             editorInstance.current.setModel(model);
             editorInstance.current.setValue(value);
         }}>
             {
-                modelNames.map(model => {
+                modelNames.map((model) => {
                     return (
-                        <Tab id={model} title={model} />
+                        <Tab key={model} id={model} title={model} />
                     );
                 })
             }
