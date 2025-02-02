@@ -7,7 +7,7 @@ import {
 import * as monaco_bundle from "monaco-bundle";
 
 console.log('monaco', monaco_bundle.monaco);
-import { KeyCode, KeyMod, languages, Uri } from "monaco-editor";
+import { KeyCode, KeyMod, Uri } from "monaco-editor";
 
 import { setupMermaid } from "./monaco/mermaid"
 
@@ -71,7 +71,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     schemas.push({
                         fileMatch: model,
                         uri: schema.$schema,
-                        schema: schema.option
+                        schema: schema
                     })
                 }
             }
@@ -80,6 +80,21 @@ export const Monaco: React.FC<IMonaco> = ({
                 const model = 'apexcharts.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
                 models[model] = value;
+            }
+            if (settings.chart.schema.trim()) {
+                const value = settings.chart.schema;
+                const model = 'plotly.json'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
+
+                const schema = resources.get(model);
+                if (schema) {
+                    schemas.push({
+                        fileMatch: model,
+                        uri: schema.$schema,
+                        schema: schema
+                    })
+                }
             }
             if (settings.chart.template.trim()) {
                 const value = settings.chart.template;
@@ -92,7 +107,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     schemas.push({
                         fileMatch: model,
                         uri: schema.$schema,
-                        schema: schema.option
+                        schema: schema
                     })
                 }
             }
@@ -108,7 +123,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     schemas.push({
                         fileMatch: model,
                         uri: schema.$schema,
-                        schema: schema.option
+                        schema: schema
                     })
                 }
             }
@@ -186,6 +201,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     switch (mn) {
                         case "echarts.json":
                         case "charticulator.json":
+                        case "plotly.json":
                         case "apexcharts.json":
                             object = "chart";
                             break;
@@ -212,6 +228,9 @@ export const Monaco: React.FC<IMonaco> = ({
                             break;
                         case "mermaid.md":
                             property = "chunk{index}";
+                            break;
+                        case "plotly.json":
+                            property = "schema";
                             break;
                     }
 
