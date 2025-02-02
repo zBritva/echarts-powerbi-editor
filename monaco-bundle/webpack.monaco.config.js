@@ -8,11 +8,11 @@ module.exports = {
 	},
     output: {
 		filename: '[name].bundle.js',
-		// publicPath: 'asset',
+		publicPath: '',
         path: path.join(__dirname, "dist"),
         library: "monaco",
         libraryTarget: 'commonjs2',
-		module: true,
+		module: false,
     },
 	experiments: {
 		outputModule: true,
@@ -24,6 +24,7 @@ module.exports = {
     mode: "development",
     module: {
 		rules: [
+            {test: /\\worker.bundle/, loader: "raw-loader"},
             {
                 test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg|gif)$/i,
                 use: [

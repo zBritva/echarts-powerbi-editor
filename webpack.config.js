@@ -80,7 +80,7 @@ module.exports = {
                 }
             },
             {test: /webpack-dev-server\\client/, loader: "null-loader"},
-            {test: /\\monacobundle/, loader: "raw-loader", exclude: /monaco.bundle.js/},
+            {test: /\\monaco-bundle/, loader: "raw-loader", exclude: /monaco.bundle.js/},
             {
                 test: /(\.ts)x|\.ts$/,
                 use: [

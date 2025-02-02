@@ -11,10 +11,11 @@
   "author": "Ilfat Galiev",
   "license": "MIT",
   "dependencies": {
-    "monaco-editor": "^0.39.0"
+    "monaco-editor": "0.39.0"
   },
   "devDependencies": {
     "monaco-editor-webpack-plugin": "^7.1.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "raw-loader": "4.0.2"
   }
 }

@@ -69,9 +69,9 @@ export const Monaco: React.FC<IMonaco> = ({
                 const schema = resources.get(model);
                 if (schema) {
                     schemas.push({
-                        fileMatch: model,
+                        fileMatch: [`inmemory://${model}`],
                         uri: schema.$schema,
-                        schema: schema
+                        schema: schema.option
                     })
                 }
             }
@@ -90,7 +90,7 @@ export const Monaco: React.FC<IMonaco> = ({
                 const schema = resources.get(model);
                 if (schema) {
                     schemas.push({
-                        fileMatch: model,
+                        fileMatch: [`inmemory://${model}`],
                         uri: schema.$schema,
                         schema: schema
                     })
@@ -105,8 +105,8 @@ export const Monaco: React.FC<IMonaco> = ({
                 const schema = resources.get(model);
                 if (schema) {
                     schemas.push({
-                        fileMatch: model,
-                        uri: schema.$schema,
+                        fileMatch: [`inmemory://${model}`],
+                        uri: "https://echarts.apache.org/doc/json-schema",
                         schema: schema
                     })
                 }
@@ -121,7 +121,7 @@ export const Monaco: React.FC<IMonaco> = ({
                 const schema = resources.get(schemaName);
                 if (schema) {
                     schemas.push({
-                        fileMatch: model,
+                        fileMatch: [`inmemory://${model}`],
                         uri: schema.$schema,
                         schema: schema
                     })
@@ -147,7 +147,6 @@ export const Monaco: React.FC<IMonaco> = ({
 
             setupMermaid(monaco_bundle.monaco);
 
-            debugger;
             if (monaco_bundle.monaco.languages.json) {
                 monaco_bundle.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
                     validate: true,
@@ -164,7 +163,12 @@ export const Monaco: React.FC<IMonaco> = ({
                 wrappingIndent: "indent",
                 codeLens: true,
                 snippetSuggestions: "inline",
-                model: null
+                model: null,
+                // contextMenuService: {
+                //     showContextMenu: () => {
+                //         debugger;
+                //     }
+                // }
             } as IStandaloneEditorConstructionOptions);
             
             configureKeyCombination();
@@ -264,8 +268,13 @@ export const Monaco: React.FC<IMonaco> = ({
             <TabsExpander />
             {/* <input className="bp5-input" type="text" placeholder="Search..." /> */}
         </Tabs>
-        <div style={{height: "100%"}} ref={root}>
-
+        <div
+        //     onContextMenu={(e) => {
+        //     debugger;
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        // }}
+        style={{height: "100%"}} ref={root}>
         </div>
     </>);
 }

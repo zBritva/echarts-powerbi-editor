@@ -33,11 +33,11 @@ import { store } from "./redux/store";
 import { setDataView, setHost, setJsonSchema, setMode, setSettings, setViewport } from './redux/slice';
 
 // load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
-const editorWorker = require("!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js");
-const jsonWorker = require("!raw-loader!./../monaco-bundle/dist/json.worker.bundle.js");
+import editorWorker from "!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js";
+import jsonWorker from "!raw-loader!./../monaco-bundle/dist/json.worker.bundle.js";
+import htmlWorker from '!raw-loader!./../monaco-bundle/dist/html.worker.bundle.js';
+import cssWorker from '!raw-loader!./../monaco-bundle/dist/css.worker.bundle.js';
 // import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
-const htmlWorker = require('!raw-loader!./../monaco-bundle/dist/html.worker.bundle.js');
-const cssWorker = require('!raw-loader!./../monaco-bundle/dist/css.worker.bundle.js');
 
 function createBlobURL(code: string) {
     const blob = new Blob([code], { type: "application/javascript" });
@@ -46,7 +46,6 @@ function createBlobURL(code: string) {
 
 window.MonacoEnvironment = {
     getWorker: function (workerId, label) {
-        debugger;
         let blob;
         if (label === "json") {
             blob = createBlobURL(jsonWorker);
