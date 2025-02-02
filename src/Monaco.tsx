@@ -73,7 +73,7 @@ export const Monaco: React.FC<IMonaco> = ({
             let property = null;
             switch (mn) {
                 case "echarts.json":
-                    property = "chart";
+                    property = "echart";
                     break;
                 case "charticulator.json":
                     property = "template";
