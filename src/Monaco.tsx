@@ -79,7 +79,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     property = "template";
                     break;
                 case "apexcharts.json":
-                    property = "chart";
+                    property = "apexchart";
                     break;
                 case "deneb.json":
                     property = "jsonSpec";
