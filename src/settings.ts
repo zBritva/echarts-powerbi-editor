@@ -50,6 +50,4 @@ export class Template {
 
 export class Editor {
     public loadJSONSchema: boolean = true;
-    public jsonSchema: TargetSchema = "handlebars.hbs";
-    public targetVisual: TargetVisual = "handlebars"
 }

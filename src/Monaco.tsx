@@ -51,7 +51,6 @@ export const Monaco: React.FC<IMonaco> = ({
     }, []);
 
     const onSaveHandler = React.useCallback(() => {
-        debugger;
         const forSave = modelNames.map(mn => {
             const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${mn}`))
             const value = model.getValue();
@@ -219,11 +218,6 @@ export const Monaco: React.FC<IMonaco> = ({
                 codeLens: true,
                 snippetSuggestions: "inline",
                 model: null,
-                // contextMenuService: {
-                //     showContextMenu: () => {
-                //         debugger;
-                //     }
-                // }
             } as IStandaloneEditorConstructionOptions);
 
             configureKeyCombination();
