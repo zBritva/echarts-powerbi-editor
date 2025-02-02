@@ -31,6 +31,7 @@ export class Chart {
 
 export class Vega {
     public jsonSpec: string = "{}";
+    public provider: string = "vegaLite";
 }
 
 export class Template {

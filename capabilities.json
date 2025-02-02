@@ -65,6 +65,22 @@
                     "type": {
                         "text": true
                     }
+                },
+                "provider": {
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayNameKey": "Provider_VegaLite",
+                                "displayName": "vegaLite",
+                                "value": "vegaLite"
+                            },
+                            {
+                                "displayNameKey": "Provider_Vega",
+                                "displayName": "vega",
+                                "value": "vega"
+                            }
+                        ]
+                    }
                 }
             }
         },
@@ -95,78 +111,6 @@
                     "description": "Load JSON schema for code completion",
                     "type": {
                         "bool": true
-                    }
-                },
-                "targetVisual": {
-                    "displayName": "Target visual for editing",
-                    "description": "Specifies the visual to edit",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "PlotlyJS Visual",
-                                "value": "plotlyjs"
-                            },
-                            {
-                                "displayName": "Deneb",
-                                "value": "deneb"
-                            },
-                            {
-                                "displayName": "ECharts",
-                                "value": "echart"
-                            },
-                            {
-                                "displayName": "Charticulator",
-                                "value": "charticulator"
-                            },
-                            {
-                                "displayName": "HTML/SVG/Handlebars",
-                                "value": "handlebars"
-                            },
-                            {
-                                "displayName": "ApexCharts",
-                                "value": "apexcharts"
-                            },
-                            {
-                                "displayName": "Mermaid.js/Markdown",
-                                "value": "mermaidmarkdown"
-                            }
-                        ]
-                    }
-                },
-                "jsonSchema": {
-                    "displayName": "JSON schema",
-                    "description": "Specifies the schema to load for code completion",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "ECharts",
-                                "value": "options.json"
-                            },
-                            {
-                                "displayName": "Plotly.js",
-                                "value": "plotly.js.json"
-                            },
-                            {
-                                "displayName": "Vega v5",
-                                "value": "vega.v5.json"
-                            },
-                            {
-                                "displayName": "Vega-Lite v5",
-                                "value": "vega-lite.v5.json"
-                            },
-                            {
-                                "displayName": "Handlebars",
-                                "value": "handlebars.hbs"
-                            },
-                            {
-                                "displayName": "Mermaid.js",
-                                "value": "mermaid"
-                            },
-                            {
-                                "displayName": "Markdown",
-                                "value": "markdown"
-                            }
-                        ]
                     }
                 }
             }

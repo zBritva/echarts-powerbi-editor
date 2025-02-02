@@ -7,10 +7,12 @@ import { ResourceLoader } from "./resource";
 export interface IApplication {
     persistValue: (object: string, property: string, value: string) => void;
     resources: ResourceLoader
+    onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 } 
 
 export const Application: React.FC<IApplication> = ({
     persistValue,
+    onContextMenu,
     resources
 }) => {
 
@@ -20,13 +22,26 @@ export const Application: React.FC<IApplication> = ({
         return null;
     }
 
-    return (<>
+    return (<div
+        style={{
+            height: "100%",
+            width: "100%",
+            margin: 0,
+            padding: 0
+        }}
+        onContextMenu={(e) => {
+            onContextMenu(e)
+            e.preventDefault();
+            e.stopPropagation();
+        }}
+    >
         <Monaco
+            onContextMenu={onContextMenu}
             resources={resources}
             onSave={(models) => {
             models.forEach(m => {
                 persistValue(m.object, m.property, m.value);
             })
         }}/>
-    </>);
+    </div>);
 }

@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import React  from "react";
+import React from "react";
 import {
     Tab, Tabs, TabsExpander
 } from "@blueprintjs/core";
@@ -26,11 +26,13 @@ export interface IMonaco {
         property: string,
         value: string
     }[]) => void;
+    onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     resources: ResourceLoader;
 }
 
 export const Monaco: React.FC<IMonaco> = ({
     onSave,
+    onContextMenu,
     resources
 }) => {
 
@@ -40,13 +42,66 @@ export const Monaco: React.FC<IMonaco> = ({
     const values = useAppSelector((state) => state.options.values);
     const settings = useAppSelector((state) => state.options.settings);
     const [modelNames, setModelNames] = React.useState<string[]>(Object.keys(values));
-    const [currentModel, setCurrentModel] = React.useState<string>(""); 
+    const [currentModel, setCurrentModel] = React.useState<string>("");
 
     const editorInstance = React.useRef<IStandaloneCodeEditor>();
 
     const schemas = React.useMemo<object[]>(() => {
         return [];
-    }, []); 
+    }, []);
+
+    const onSaveHandler = React.useCallback(() => {
+        debugger;
+        const forSave = modelNames.map(mn => {
+            const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${mn}`))
+            const value = model.getValue();
+
+            let object = null;
+            switch (mn) {
+                case "echarts.json":
+                case "charticulator.json":
+                case "plotly.json":
+                case "apexcharts.json":
+                    object = "chart";
+                    break;
+                case "deneb.json":
+                    object = "vega";
+                    break;
+                case "mermaid.md":
+                    object = "template";
+                    break;
+            }
+            let property = null;
+            switch (mn) {
+                case "echarts.json":
+                    property = "chart";
+                    break;
+                case "charticulator.json":
+                    property = "template";
+                    break;
+                case "apexcharts.json":
+                    property = "chart";
+                    break;
+                case "deneb.json":
+                    property = "jsonSpec";
+                    break;
+                case "mermaid.md":
+                    property = "chunk{index}";
+                    break;
+                case "plotly.json":
+                    property = "schema";
+                    break;
+            }
+
+            return {
+                object,
+                property,
+                value
+            }
+        });
+
+        onSave(forSave);
+    }, [onSave, modelNames]);
 
     React.useEffect(() => {
         (async () => {
@@ -117,7 +172,7 @@ export const Monaco: React.FC<IMonaco> = ({
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
                 models[model] = value;
 
-                const schemaName = "vega-lite.json";
+                const schemaName = settings.vega.provider == "vegaLite" ? "vega.json" : "";
                 const schema = resources.get(schemaName);
                 if (schema) {
                     schemas.push({
@@ -170,18 +225,22 @@ export const Monaco: React.FC<IMonaco> = ({
                 //     }
                 // }
             } as IStandaloneEditorConstructionOptions);
-            
+
             configureKeyCombination();
             const names = Object.keys(models);
             setModelNames(names)
             setCurrentModel(names[0]);
+
+            const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${names[0]}`))
+            const value = model.getValue();
+            editorInstance.current.setModel(model);
+            editorInstance.current.setValue(value);
         })();
     }, []);
 
     const configureKeyCombination = React.useCallback(() => {
         editorInstance.current.addCommand((KeyMod.CtrlCmd || KeyMod.WinCtrl) | KeyCode.KeyS, () => {
-            const value = editorInstance.current.getValue();
-            // this.onSaveCallback(value);
+            onSaveHandler()
         });
     }, [editorInstance]);
 
@@ -190,63 +249,12 @@ export const Monaco: React.FC<IMonaco> = ({
             onExport={() => {
                 const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${currentModel}`))
                 const value = model.getValue();
-                
+
             }}
             onLoad={() => {
                 //
             }}
-            onSave={() => {
-                const forsave = modelNames.map(mn => {
-                    const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${mn}`))
-                    const value = model.getValue();
-
-                    
-                    let object = null;
-                    switch (mn) {
-                        case "echarts.json":
-                        case "charticulator.json":
-                        case "plotly.json":
-                        case "apexcharts.json":
-                            object = "chart";
-                            break;
-                        case "deneb.json":
-                            object = "vega";
-                            break;
-                        case "mermaid.md":
-                            object = "vega";
-                            break;
-                    }
-                    let property = null;
-                    switch (mn) {
-                        case "echarts.json":
-                            property = "chart";
-                            break;
-                        case "charticulator.json":
-                            property = "template";
-                            break;
-                        case "apexcharts.json":
-                            property = "chart";
-                            break;
-                        case "deneb.json":
-                            property = "jsonSpec";
-                            break;
-                        case "mermaid.md":
-                            property = "chunk{index}";
-                            break;
-                        case "plotly.json":
-                            property = "schema";
-                            break;
-                    }
-
-                    return {
-                        object,
-                        property,
-                        value
-                    }
-                });
-
-                onSave(forsave);
-            }}
+            onSave={onSaveHandler}
         />
         <Tabs id="TabsExample" selectedTabId={currentModel} onChange={(newModel, oldModel, event) => {
             setCurrentModel(newModel as string);
@@ -269,12 +277,7 @@ export const Monaco: React.FC<IMonaco> = ({
             {/* <input className="bp5-input" type="text" placeholder="Search..." /> */}
         </Tabs>
         <div
-        //     onContextMenu={(e) => {
-        //     debugger;
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        // }}
-        style={{height: "100%"}} ref={root}>
+            style={{ height: "100%" }} ref={root}>
         </div>
     </>);
 }

@@ -95,7 +95,13 @@ export class Visual implements IVisual {
                 persistValue: (object: string, property: string, value: string) => {
                     this.persistValue(object, property, value);
                 },
-                resources: this.resources
+                resources: this.resources,
+                onContextMenu: (e) => {
+                    this.selectionManager.showContextMenu(null, {
+                        x: e.clientX,
+                        y: e.clientY
+                    });
+                }
             });
 
             const storeProvider = React.createElement(Provider, {
@@ -164,7 +170,7 @@ export class Visual implements IVisual {
         if (property.indexOf("{index}") != -1) {
             const chunks = splitToChunks(value);
             for (const chunk in chunks) {
-                this.persistProperty(object, property.replace('${index}', chunk), chunks[chunk]);
+                this.persistProperty(object, property.replace('{index}', chunk), chunks[chunk]);
             }
         } else {
             this.persistProperty(object, property, value);
