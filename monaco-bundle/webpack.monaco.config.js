@@ -1,28 +1,30 @@
 const path = require('path');
 const webpack = require("webpack");
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
 	entry: {
-        "monaco": "./src/monaco/reexport.ts"
+        "monaco": "./src/index.ts"
 	},
     output: {
 		filename: '[name].bundle.js',
-		publicPath: 'asset',
-        path: path.join(__dirname, "monacobundle"),
+		publicPath: '',
+        path: path.join(__dirname, "dist"),
         library: "monaco",
         libraryTarget: 'commonjs2',
-		module: true,
+		module: false,
     },
 	experiments: {
 		outputModule: true,
 	},
     optimization: {
-        concatenateModules: true,
-        minimize: true
+        concatenateModules: false,
+        minimize: false
     },
     mode: "development",
     module: {
 		rules: [
+            {test: /\\worker.bundle/, loader: "raw-loader"},
             {
                 test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg|gif)$/i,
                 use: [
@@ -40,6 +42,7 @@ module.exports = {
 	plugins: [
 		new webpack.optimize.LimitChunkCountPlugin({
 			maxChunks: 1
-		})
+		}),
+        // new MonacoWebpackPlugin()
 	]
 };

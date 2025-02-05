@@ -10,170 +10,147 @@ import DataView = powerbiVisualsApi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
 import IVisualHost = powerbiVisualsApi.extensibility.visual.IVisualHost
 import ValueTypeDescriptor = powerbiVisualsApi.ValueTypeDescriptor;
-import VisualUpdateType = powerbiVisualsApi.VisualUpdateType;
 import ISelectionManager = powerbiVisualsApi.extensibility.ISelectionManager;
 
 import { VisualSettings } from "./settings";
-import { ResourceLoader, wrapSchema } from "./resource";
+import { ResourceLoader } from "./resource";
 
-import { MonacoEditorWrapper } from "./monaco/editor";
-import { IColumn } from "./data";
-import { Toolbar } from "./toolbar";
-import { concatChunks, splitToChunks } from "./utils"
+// import { MonacoEditorWrapper } from "./monaco/editor";
+import { Application, IApplication } from "./Application";
+import { deepClone, splitToChunks } from "./utils"
+
+import React from "react";
+import { createRoot, Root } from "react-dom/client";
+import { BlueprintProvider, OverlaysProvider } from "@blueprintjs/core";
 
 import "../style/visual.scss";
+import { Provider } from "react-redux";
+
+import { store } from "./redux/store";
+import { setDataView, setHost, setMode, setSettings, setViewport } from './redux/slice';
+
+// load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
+import editorWorker from "!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js";
+import jsonWorker from "!raw-loader!./../monaco-bundle/dist/json.worker.bundle.js";
+import htmlWorker from '!raw-loader!./../monaco-bundle/dist/html.worker.bundle.js';
+import cssWorker from '!raw-loader!./../monaco-bundle/dist/css.worker.bundle.js';
+// import tsWorker from "!raw-loader!../../monacobundle/ts.worker.bundle.js";
+
+function createBlobURL(code: string) {
+    const blob = new Blob([code], { type: "application/javascript" });
+    return URL.createObjectURL(blob);
+}
+
+window.MonacoEnvironment = {
+    getWorker: function (workerId, label) {
+        let blob;
+        if (label === "json") {
+            blob = createBlobURL(jsonWorker);
+        } else
+        if (label === 'css' || label === 'scss' || label === 'less') {
+            blob = createBlobURL(cssWorker);
+        } else
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+            blob = createBlobURL(htmlWorker);
+        }
+        // if (label === "typescript" || label === "javascript") {
+        //   blob = createBlobURL(tsWorker);
+        // } else
+        else {
+            blob = createBlobURL(editorWorker);
+        }
+        return new Worker(blob, { name: label });
+    },
+    createTrustedTypesPolicy: () => null,
+};
 
 export class Visual implements IVisual {
     private target: HTMLElement;
     private options: VisualConstructorOptions;
     private settings: VisualSettings;
     private host: IVisualHost;
-    private editor: MonacoEditorWrapper;
-    private toolbar: Toolbar;
+    private root: Root;
     private resources: ResourceLoader;
     private selectionManager: ISelectionManager;
     private propertyForPersist: {
         object: string;
-        propperty: string;
+        property: string;
     };
 
-    private previousTargetVisual: string;
-
-    constructor(options: VisualConstructorOptions) {
+    constructor(options: VisualConstructorOptions | undefined) {
         this.options = options;
         this.target = options.element;
         this.host = options.host;
 
         this.selectionManager = this.host.createSelectionManager();
-
-        this.toolbar = new Toolbar(this.target);
-        this.editor = new MonacoEditorWrapper(this.target);
-        this.editor.hide();
-
-        this.editor.onSave((value) => {
-            this.persistValue(value);
-        })
-
         this.resources = new ResourceLoader();
 
-        this.toolbar.onSave.subscribe(() => {
-            const value = this.editor.getValue();
-            this.persistValue(value);
-        }); 
-
-        this.toolbar.onLoad.subscribe((content: string) => {
-            if (!content) {
-                return;
-            }
-            this.editor.loadValue(content, true);
-        });
-
-        this.toolbar.onContextMenu.subscribe((event: MouseEvent) => {
-            this.selectionManager.showContextMenu(null, {
-                x: event.clientX,
-                y: event.clientY
+        if (document) {
+            const reactApplication = React.createElement<IApplication>(Application, {
+                key: "root",
+                persistValue: (object: string, property: string, value: string) => {
+                    this.persistValue(object, property, value);
+                },
+                resources: this.resources,
+                onContextMenu: (e) => {
+                    this.selectionManager.showContextMenu(null, {
+                        x: e.clientX,
+                        y: e.clientY
+                    });
+                }
             });
-            event.preventDefault();
-            event.stopPropagation();
-        });
-        
-        this.toolbar.onExport.subscribe(() => {
-            this.host.downloadService.exportVisualsContent(this.editor.getValue(), 'chart.json', '.json', 'JSON File');
-        });
 
-        this.host.downloadService.exportStatus().then((status) => {
-            this.toolbar.allowExport(status === powerbiVisualsApi.PrivilegeStatus.Allowed);
-        });
+            const storeProvider = React.createElement(Provider, {
+                store: store,
+                key: 'provider',
+                children: []
+            }, [
+                reactApplication
+            ]);
+
+            const provider = React.createElement(BlueprintProvider, {
+                key: 'provider',
+                children: []
+            }, [
+                storeProvider
+            ]);
+            const overlay = React.createElement(OverlaysProvider, {
+                key: 'overlay',
+                children: []
+            }, [
+                provider
+            ]);
+            this.root = createRoot(this.target);
+            this.root.render(overlay);
+        }
     }
 
-    private persistValue(value: string) {
-        if (this.settings.editor.targetVisual === 'handlebars') {
+    private persistValue(object: string, property: string, value: string) {
+        if (property.indexOf("{index}") != -1) {
             const chunks = splitToChunks(value);
             for (const chunk in chunks) {
-                this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty.replace('${index}', chunk), chunks[chunk]);
+                this.persistProperty(object, property.replace('{index}', chunk), chunks[chunk]);
             }
         } else {
-            this.persistProperty(this.propertyForPersist.object, this.propertyForPersist.propperty, value);
+            this.persistProperty(object, property, value);
         }
     }
 
     public async update(options: VisualUpdateOptions) {
-        console.log('update');
         this.settings = Visual.parseSettings(options.dataViews[0]);
-
-        this.toolbar.allowLoadSave(options.viewMode !== powerbiVisualsApi.ViewMode.View)
-        const targetVisual = this.settings.editor.targetVisual;
+        store.dispatch(setHost(this.host));
+        store.dispatch(setMode(options.editMode));
+        store.dispatch(setSettings(this.settings));
+        store.dispatch(setDataView(deepClone(options.dataViews[0])));
+        store.dispatch(setViewport(deepClone(options.viewport)));
 
         if (this.settings.editor.loadJSONSchema) {
-            debugger;
-            const jsonSchema = this.settings.editor.jsonSchema;
-            await this.resources.load(jsonSchema);
-            const schema = this.resources.get(jsonSchema);
-            if (schema !== null) {
-                debugger;
-                this.editor.setupJson(wrapSchema(jsonSchema, schema));
-                this.editor.setModel(jsonSchema, targetVisual === "handlebars" ? 'html' : 'json');
-            }
+            await this.resources.load("echarts.json");
+            await this.resources.load("plotly.json");
+            await this.resources.load("vega.json");
+            await this.resources.load("vega-lite.json");
+            await this.resources.load("charticulator.json");
         }
-
-        let schema: string = "{}";
-
-        switch (targetVisual) {
-            case "plotlyjs":
-                this.propertyForPersist = {
-                    object: "chart",
-                    propperty: "schema"
-                };
-                schema = this.settings.chart.schema;
-                break;
-            case "deneb":
-                this.propertyForPersist = {
-                    object: "vega",
-                    propperty: "jsonSpec"
-                };
-                schema = this.settings.vega.jsonSpec;
-                break;
-            case "charticulator":
-                this.propertyForPersist = {
-                    object: "chart",
-                    propperty: "template"
-                };
-                schema = this.settings.chart.template;
-                break;
-            case "handlebars":
-                    this.propertyForPersist = {
-                        object: "template",
-                        propperty: "chunk${index}"
-                    };
-                    schema = concatChunks(this.settings.template);
-                    break;
-            default:
-                this.propertyForPersist = {
-                    object: "chart",
-                    propperty: "echart"
-                };
-                schema = this.settings.chart.echart;
-                break;
-        }
-
-        // add options for data model
-        if (
-            ((options.type & VisualUpdateType.All) === VisualUpdateType.All ||
-            (options.type & VisualUpdateType.Data) === VisualUpdateType.Data) &&
-            targetVisual === "echart"
-        ) {
-            const columns = this.getColumns(options.dataViews[0]);
-            this.editor.setDataModel({
-                columns
-            });
-        }
-
-        if (schema) {
-            this.editor.loadValue(schema, targetVisual !== this.previousTargetVisual);
-        }
-
-        this.editor.show();
-        this.previousTargetVisual = targetVisual;
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
@@ -195,13 +172,6 @@ export class Visual implements IVisual {
             ]
         });
 
-    }
-
-    private getColumns(dataView: DataView) {
-        return dataView.metadata.columns.map(col => (<IColumn>{
-            displayName: col.displayName,
-            type: Visual.typeToString(col.type)
-        }));
     }
 
     private static typeToString(type: ValueTypeDescriptor): string {

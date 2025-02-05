@@ -29,3 +29,7 @@ export function splitToChunks(template: string): string[] {
     }
 
 }
+
+export function deepClone(object: unknown) {
+    return JSON.parse(JSON.stringify(object))
+}

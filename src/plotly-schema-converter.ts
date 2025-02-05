@@ -1,19 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export default class PlotlyJSONSchemaConverter {
 
     private static convertType(attr: any) {

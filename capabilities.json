@@ -22,6 +22,15 @@
                         "text": true
                     }
                 },
+                "apexchart": {
+                    "description": "ApexCharts schema",
+                    "descriptionKey": "Visual_ApexChartsSchema",
+                    "displayName": "ApexCharts schema",
+                    "displayNameKey": "Visual_ApexChartsSchema",
+                    "type": {
+                        "text": true
+                    }
+                },
                 "schema": {
                     "description": "Chart schema",
                     "descriptionKey": "Visual_ChartSchema",
@@ -56,6 +65,22 @@
                     "type": {
                         "text": true
                     }
+                },
+                "provider": {
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayNameKey": "Provider_VegaLite",
+                                "displayName": "vegaLite",
+                                "value": "vegaLite"
+                            },
+                            {
+                                "displayNameKey": "Provider_Vega",
+                                "displayName": "vega",
+                                "value": "vega"
+                            }
+                        ]
+                    }
                 }
             }
         },
@@ -88,60 +113,11 @@
                         "bool": true
                     }
                 },
-                "targetVisual": {
-                    "displayName": "Target visual for editing",
-                    "description": "Specifies the visual to edit",
+                "showAllSettings": {
+                    "displayName": "Show all tabs",
+                    "description": "Load JSON schema for all supported visuals",
                     "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "PlotlyJS Visual",
-                                "value": "plotlyjs"
-                            },
-                            {
-                                "displayName": "Deneb",
-                                "value": "deneb"
-                            },
-                            {
-                                "displayName": "ECharts",
-                                "value": "echart"
-                            },
-                            {
-                                "displayName": "Charticulator",
-                                "value": "charticulator"
-                            },
-                            {
-                                "displayName": "HTML/SVG/Handlebars",
-                                "value": "handlebars"
-                            }
-                        ]
-                    }
-                },
-                "jsonSchema": {
-                    "displayName": "JSON schema",
-                    "description": "Specifies the schema to load for code completion",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "ECharts",
-                                "value": "options.json"
-                            },
-                            {
-                                "displayName": "Plotly.js",
-                                "value": "plotly.js.json"
-                            },
-                            {
-                                "displayName": "Vega v5",
-                                "value": "vega.v5.json"
-                            },
-                            {
-                                "displayName": "Vega-Lite v5",
-                                "value": "vega-lite.v5.json"
-                            },
-                            {
-                                "displayName": "Handlebars",
-                                "value": "handlebars"
-                            }
-                        ]
+                        "bool": true
                     }
                 }
             }
