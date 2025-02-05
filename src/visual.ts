@@ -27,7 +27,7 @@ import "../style/visual.scss";
 import { Provider } from "react-redux";
 
 import { store } from "./redux/store";
-import { setDataView, setMode, setSettings, setViewport } from './redux/slice';
+import { setDataView, setHost, setMode, setSettings, setViewport } from './redux/slice';
 
 // load the source of webworkers as plain text to wrap them into blob and pass into web worker constructor. see setEnvironment function
 import editorWorker from "!raw-loader!./../monaco-bundle/dist/editor.worker.bundle.js";
@@ -138,6 +138,7 @@ export class Visual implements IVisual {
 
     public async update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options.dataViews[0]);
+        store.dispatch(setHost(this.host));
         store.dispatch(setMode(options.editMode));
         store.dispatch(setSettings(this.settings));
         store.dispatch(setDataView(deepClone(options.dataViews[0])));

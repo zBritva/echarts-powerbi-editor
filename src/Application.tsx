@@ -17,6 +17,7 @@ export const Application: React.FC<IApplication> = ({
 }) => {
 
     const settings = useAppSelector((state) => state.options.settings);
+    const host = useAppSelector((state) => state.options.host);
 
     if (!settings) {
         return null;
@@ -39,9 +40,13 @@ export const Application: React.FC<IApplication> = ({
             onContextMenu={onContextMenu}
             resources={resources}
             onSave={(models) => {
-            models.forEach(m => {
-                persistValue(m.object, m.property, m.value);
-            })
-        }}/>
+                models.forEach(m => {
+                    persistValue(m.object, m.property, m.value);
+                })
+            }}
+            onExport={(value, name) => {
+                host.downloadService.exportVisualsContent(value, `${name}.txt`, "*.txt", "Visual content")
+            }}
+        />
     </div>);
 }

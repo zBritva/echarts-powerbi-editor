@@ -26,18 +26,18 @@ export interface IMonaco {
         property: string,
         value: string
     }[]) => void;
+    onExport: (value: string, name: string) => void;
     onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     resources: ResourceLoader;
 }
 
 export const Monaco: React.FC<IMonaco> = ({
     onSave,
-    onContextMenu,
+    onExport,
     resources
 }) => {
 
     const root = React.useRef<HTMLDivElement>();
-    const host = useAppSelector((state) => state.options.host);
 
     const values = useAppSelector((state) => state.options.values);
     const settings = useAppSelector((state) => state.options.settings);
@@ -45,6 +45,8 @@ export const Monaco: React.FC<IMonaco> = ({
     const [currentModel, setCurrentModel] = React.useState<string>("");
 
     const editorInstance = React.useRef<IStandaloneCodeEditor>();
+
+    const fileInput = React.useRef<HTMLInputElement>();
 
     const schemas = React.useMemo<object[]>(() => {
         return [];
@@ -107,6 +109,22 @@ export const Monaco: React.FC<IMonaco> = ({
 
         onSave(forSave);
     }, [onSave, modelNames]);
+
+    const onLoadFile = React.useCallback(() => {
+        const file = fileInput.current.files[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", (e) => {
+            debugger;
+            const text = e.target.result as string;
+            try {
+                const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${currentModel}`))
+                editorInstance.current.setValue(text)
+            } catch (e) {
+                // setJsonError(true);
+            }
+        });
+        reader.readAsText(file);
+    }, [fileInput]);
 
     React.useEffect(() => {
         (async () => {
@@ -267,10 +285,10 @@ export const Monaco: React.FC<IMonaco> = ({
             onExport={() => {
                 const model = monaco_bundle.monaco.editor.getModel(Uri.parse(`inmemory://${currentModel}`))
                 const value = model.getValue();
-
+                onExport(value, currentModel);
             }}
             onLoad={() => {
-                //
+                fileInput.current?.click();
             }}
             onSave={onSaveHandler}
         />
@@ -297,5 +315,14 @@ export const Monaco: React.FC<IMonaco> = ({
         <div
             style={{ height: "100%" }} ref={root}>
         </div>
+        <input
+            ref={fileInput}
+            type="file"
+            id="file-input"
+            style={{
+                display: "none",
+            }}
+            onChange={onLoadFile}
+        />
     </>);
 }
