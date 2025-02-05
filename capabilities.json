@@ -112,6 +112,13 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "showAllSettings": {
+                    "displayName": "Show all tabs",
+                    "description": "Load JSON schema for all supported visuals",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },

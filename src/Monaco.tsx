@@ -69,6 +69,9 @@ export const Monaco: React.FC<IMonaco> = ({
                 case "mermaid.md":
                     object = "template";
                     break;
+                case "handlebars.hbs":
+                    object = "handlebars";
+                    break;
             }
             let property = null;
             switch (mn) {
@@ -89,6 +92,9 @@ export const Monaco: React.FC<IMonaco> = ({
                     break;
                 case "plotly.json":
                     property = "schema";
+                    break;
+                case "handlebars.hbs":
+                    property = "chunk{index}";
                     break;
             }
 
@@ -114,7 +120,7 @@ export const Monaco: React.FC<IMonaco> = ({
 
             const schemas = [];
 
-            if (settings.chart.echart.trim()) {
+            if (settings.chart.echart.trim() || settings.editor.showAllSettings) {
                 const value = settings.chart.echart;
                 const model = 'echarts.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
@@ -129,13 +135,13 @@ export const Monaco: React.FC<IMonaco> = ({
                     })
                 }
             }
-            if (settings.chart.apexcharts.trim()) {
+            if (settings.chart.apexcharts.trim() || settings.editor.showAllSettings) {
                 const value = settings.chart.apexcharts;
                 const model = 'apexcharts.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
                 models[model] = value;
             }
-            if (settings.chart.schema.trim()) {
+            if (settings.chart.schema.trim() || settings.editor.showAllSettings) {
                 const value = settings.chart.schema;
                 const model = 'plotly.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
@@ -150,7 +156,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     })
                 }
             }
-            if (settings.chart.template.trim()) {
+            if (settings.chart.template.trim() || settings.editor.showAllSettings) {
                 const value = settings.chart.template;
                 const model = 'charticulator.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
@@ -165,7 +171,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     })
                 }
             }
-            if (settings.vega.jsonSpec.trim()) {
+            if (settings.vega.jsonSpec.trim() || settings.editor.showAllSettings) {
                 const value = settings.vega.jsonSpec;
                 const model = 'deneb.json'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "json", Uri.parse(`inmemory://${model}`))
@@ -181,7 +187,7 @@ export const Monaco: React.FC<IMonaco> = ({
                     })
                 }
             }
-            if (settings.template.chunk0.trim()) {
+            if (settings.template.chunk0.trim() || settings.editor.showAllSettings) {
                 const value = settings.template.chunk0
                     .concat(settings.template.chunk1)
                     .concat(settings.template.chunk2)
@@ -195,6 +201,24 @@ export const Monaco: React.FC<IMonaco> = ({
                     .concat(settings.template.chunk10)
 
                 const model = 'mermaid.md'
+                const newModel = monaco_bundle.monaco.editor.createModel(value, "mermaid", Uri.parse(`inmemory://${model}`))
+                models[model] = value;
+            }
+
+            if (settings.handlebars.chunk0.trim() || settings.editor.showAllSettings) {
+                const value = settings.template.chunk0
+                    .concat(settings.template.chunk1)
+                    .concat(settings.template.chunk2)
+                    .concat(settings.template.chunk3)
+                    .concat(settings.template.chunk4)
+                    .concat(settings.template.chunk5)
+                    .concat(settings.template.chunk6)
+                    .concat(settings.template.chunk7)
+                    .concat(settings.template.chunk8)
+                    .concat(settings.template.chunk9)
+                    .concat(settings.template.chunk10)
+
+                const model = 'handlebars.hbs'
                 const newModel = monaco_bundle.monaco.editor.createModel(value, "mermaid", Uri.parse(`inmemory://${model}`))
                 models[model] = value;
             }

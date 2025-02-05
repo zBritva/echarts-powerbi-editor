@@ -13,6 +13,7 @@ export interface IVisualSettings {
     vega: Vega
     editor: Editor
     template: Template
+    handlebars: Template
 }
 
 export class VisualSettings extends DataViewObjectsParser implements IVisualSettings {
@@ -20,6 +21,7 @@ export class VisualSettings extends DataViewObjectsParser implements IVisualSett
     public vega: Vega = new Vega();
     public editor: Editor = new Editor();
     public template: Template = new Template();
+    public handlebars: Template = new Template();
 }
 
 export class Chart {
@@ -50,4 +52,5 @@ export class Template {
 
 export class Editor {
     public loadJSONSchema: boolean = true;
+    public showAllSettings: boolean = false;
 }
